@@ -1,0 +1,116 @@
+{
+    "sorteio": {
+        "sorteio": "/sorteio"
+    }, 
+    "porcentagem": {
+        "1": "/porcentagem/1", 
+        "2": "/porcentagem/2", 
+        "3": "/porcentagem/3", 
+        "4": "/porcentagem/4", 
+        "5": "/porcentagem/5", 
+        "6": "/porcentagem/6", 
+        "7": "/porcentagem/7", 
+        "8": "/porcentagem/8", 
+        "9": "/porcentagem/9"
+    }, 
+    "estatística": {
+        "média": "/estatistica/media", 
+        "mediana": "/estatistica/mediana", 
+        "moda": "/estatistica/moda", 
+        "variante": "/estatistica/variante", 
+        "desvio padrão": "/estatistica/desvio-padrao"
+    },
+    "regra de 3": {
+        "simples": "/regra-de-3/simples", 
+        "composta": "/regra-de-3/composta"
+    }, 
+    "raiz": {
+        "raiz": "/raiz"
+    }, 
+    "potência": {
+        "potência": "/potencia"
+    }, 
+    "simplificar fração": {
+        "simplificar fração": "/simplificar-fracao"
+    }, 
+    "notação científica": {
+        "converter para notação científica": "/notacao-cientifica/converter-para-notacao-cientifica", 
+        "converter para decimal": "/notacao-cientifica/converter-para-decimal"
+    }, 
+    "progressão aritmética": {
+        "gerar": "/progressao-aritmetica/gerar", 
+        "localizar": "/progressao-aritmetica/localizar", 
+        "posição": "/progressao-aritmetica/posicao", 
+        "razão": "/progressao-aritmetica/razao"
+    }, 
+    "progressão geométrica": {
+        "gerar": "/progressao-geometrica/gerar", 
+        "localizar": "/progressao-geometrica/localizar", 
+        "posição": "/progressao-geometrica/posicao", 
+        "razão": "/progressao-geometrica/razao"
+    }, 
+    "m.m.c.": {
+        "m.m.c.": "/mmc"
+    }, 
+    "m.d.c.": {
+        "m.d.c.": "/mdc"
+    }, 
+    "equação 2º": {
+        "bhaskara": "/equacao-2-grau/bhaskara",
+        "delta":  "/equacao-2-grau/delta"
+    }, 
+    "trigonometria": {
+        "hipotenusa": "/trigonometria/hipotenusa", 
+        "encontrar cateto": "/trigonometria/encontrar-cateto", 
+        "hipotenusa com ângulo": "/trigonometria/hipotenusa-com-angulo", 
+        "cateto adjacente": "/trigonometria/cateto-adjacente", 
+        "cateto oposto": "/trigonometria/cateto-oposto"
+    },
+    "circulo": {
+        "área": "/circulo/area", 
+        "perímetro": "/circulo/perimetro", 
+        "raio": "/circulo/raio", 
+        "coroa circular": "/circulo/coroa-circular"
+    }, 
+    "trapézio": {
+        "área": "/trapezio/area", 
+        "altura": "/trapezio/altura", 
+        "base": "/trapezio/base", 
+        "base média": "/trapezio/base-media", 
+        "mediana de Euler": "/trapezio/mediana-de-euler"
+    }, 
+    "verificar número primo": {
+        "verificar": "/verificar-numero-primo/verificar", 
+        "lista de números primos": "/verificar-numero-primo/lista-de-numeros-primos"
+    }, 
+    "retângulo": {
+        "área": "/retangulo/area", 
+        "perímetro": "/retangulo/perimetro", 
+        "lado": "/retangulo/lado"
+    },
+    "polígono": {
+        "apótema": "/poligono/apotema", 
+        "área": "/poligono/area", 
+        "número de lados": "/poligono/numero-de-lados", 
+        "perímetro": "/poligono/perimetro", 
+        "semiperímetro": "/poligono/semiperimetro", 
+        "valor do lado": "/poligono/valor-do-lado"
+    }, 
+    "paralelogramo": {
+        "área": "/paralelogramo/area", 
+        "altura": "/paralelogramo/altura", 
+        "base": "/paralelogramo/base"
+    },
+    "pirâmide": {
+        "volume": "/piramide/volume", 
+        "altura": "/piramide/altura", 
+        "área da base": "/piramide/area-da-base"
+    },
+    "cone": {
+        "volume": "/cone/volume", 
+        "altura": "/cone/altura", 
+        "área total": "/cone/area-total", 
+        "área lateral": "/cone/area-lateral", 
+        "geratriz": "/cone/geratriz"
+    }
+}
