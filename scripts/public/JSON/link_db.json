@@ -61,7 +61,7 @@
     }, 
     "trigonometria": {
         "hipotenusa": "/trigonometria/hipotenusa", 
-        "encontrar cateto": "/trigonometria/encontrar-cateto", 
+        "cateto": "/trigonometria/cateto", 
         "hipotenusa com ângulo": "/trigonometria/hipotenusa-com-angulo", 
         "cateto adjacente": "/trigonometria/cateto-adjacente", 
         "cateto oposto": "/trigonometria/cateto-oposto"

@@ -1,6 +1,4 @@
-import cf from "../complementar_functions.js"
-
-const calc_funtions = {
+const calc_function = {
     "regra de 3": {
         simples: function (v1, v2, v3) {
             return (v2 * v3) / v1
@@ -674,4 +672,4 @@ const calc_funtions = {
     }
 }
 
-export default calc_funtions
+export default calc_function

@@ -1,6 +1,6 @@
-import FETCHER from "../fetcher.js"
+import fetcher from "../../others/fetcher.js"
 
-export default function CREATE_MENU(db) {
+export default function createMenu(db) {
     const menu_icon_box = document.getElementById('menu_icon_box')
     const menu_container = document.getElementById('menu_container')
     let parent_keys = Object.keys(db)
@@ -53,7 +53,7 @@ export default function CREATE_MENU(db) {
     option_links.forEach((el) => {
         el.addEventListener('click', (e) => {
             const link = e.currentTarget.getAttribute('link')
-            FETCHER(link)
+            fetcher(link)
             menu_icon_box.classList.toggle('on')
             menu_container.classList.toggle('on')
             menu_management()

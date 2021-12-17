@@ -1,4 +1,4 @@
-export default function DATALIST_HISTORY_MANAGEMENT(reference, method = 'add') {
+export default function datalistHistoryManagement(reference, method = 'add') {
     const data = localStorage.getItem('datalist_history')
     const current_datalist_history = data ? (data.includes(',') ? data.split(',') : [data]) : []
     if (method === 'add') {

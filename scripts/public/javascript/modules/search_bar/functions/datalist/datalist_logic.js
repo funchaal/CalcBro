@@ -1,13 +1,11 @@
-import levenshtein from '../levenshtein.js'
-import CLICK_ELEMENT from '../click_element.js'
-import SEARCH_BAR_MANAGEMENT from './search_bar_manager.js'
-import DATALIST_HISTORY_MANAGEMENT from './datalist_history_management.js'
-import FETCHER from '../fetcher.js'
+import levenshtein from '../../../algorithms/levenshtein.js'
+import searchBar from '../../search_bar.js'
+import fetcher from '../../../others/fetcher.js'
 
 const search_bar = document.getElementById('search_bar')
 const datalist = document.getElementById('datalist')
 
-function ORGANIZER(input, db) {
+function organizer(input, db) {
     let sequence = []
     const db_keys = Object.keys(db)
     const string = input
@@ -45,8 +43,7 @@ function ORGANIZER(input, db) {
     sequence = sequence.slice(0, 5)
     return sequence
 }
-
-export default function DATALIST_LOGIC(db) {
+export default function datalistLogic(db) {
     if (!db) throw new Error('no database inserted')
     const string = search_bar.value.toRaw__()
     if (string === '') {
@@ -73,15 +70,13 @@ export default function DATALIST_LOGIC(db) {
         }
         options = options.join('')
         datalist.innerHTML = options
-        document.querySelectorAll('#datalist li .delete-icon').forEach((el) => {
-            el.addEventListener('click', (e) => {
-                const reference = e.target.nextElementSibling.textContent
-                DATALIST_HISTORY_MANAGEMENT(reference, 'delete')
-                SEARCH_BAR_MANAGEMENT(true)
-            })
+        onEventElement('#datalist li .delete-icon', (el) => {
+            const reference = el.nextElementSibling.textContent
+            searchBar.datalist.historyManagement(reference, 'delete')
+            searchBar.mediaManagement(true)
         })
     } else {
-        const a = ORGANIZER(string, db)
+        const a = organizer(string, db)
         var options = []
         for (let i in a) {
             options.push(`<li><img src="/images/icons/lupa/lupa.svg" alt=""><span class="option" link="${db[a[i]][Object.keys(db[a[i]])[0]]}">${a[i]}</span></li>`)
@@ -103,12 +98,11 @@ export default function DATALIST_LOGIC(db) {
             datalist.innerHTML = '<span class="no-results">Sem correspondência.</span>'
         }
     }
-    CLICK_ELEMENT('#datalist .option', (element) => {
+    onEventElement('#datalist .option', (element) => {
         const reference = element.parentElement.getAttribute('reference') || element.textContent
         const link = element.getAttribute('link')
         search_bar.value = reference
-        FETCHER(link)
-        SEARCH_BAR_MANAGEMENT(false)
-        DATALIST_HISTORY_MANAGEMENT(reference)
+        fetcher(link)
+        searchBar.datalist.historyManagement(reference)
     })
 }

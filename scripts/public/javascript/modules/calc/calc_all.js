@@ -1,16 +1,15 @@
-import  calc_functions from './calc_functions.js'
-import ALERT_MESSAGE from '../alert_message.js'
-import { CALC_ANIMATION_IN, CALC_ANIMATION_OUT, CALC_ANIMATION_ERROR } from './animations.js'
+import  calc_function from './calc_function.js'
+import calcAnimation from './calc_animation.js'
 
-export default function CALC_ALL(a, b, ...inputs) {
+export default function calcAll(a, b, ...inputs) {
     const calc_result_more_info_box = document.getElementById('calc_result_more_info_box')
     const calc_result_text = document.getElementById('calc_result_text')
     const calc_result_more_info_texts = document.querySelectorAll('.calc-result-more-info-text')
     try {
-        var total = calc_functions[a][b](...inputs)
+        var total = calc_function[a][b](...inputs)
     } catch (e) {
-        ALERT_MESSAGE(e.message, 'red')
-        CALC_ANIMATION_ERROR()
+        message(e.message, 'red')
+        calcAnimation.error()
         return
     }
     total = Array.isArray(total) ? total : [total]
@@ -19,10 +18,10 @@ export default function CALC_ALL(a, b, ...inputs) {
         else return element
     })
     if (total.some((element) => element !== null && typeof element === 'number' && isNaN(element))) {
-        alert('khk')
+        message('preencha corretamente os campos.', 'red')
         return
     }
-    CALC_ANIMATION_OUT()
+    calcAnimation.out()
     setTimeout(() => {
         calc_result_text.textContent = total[0]
         if (total.length === 1) {
@@ -42,6 +41,6 @@ export default function CALC_ALL(a, b, ...inputs) {
             })
             calc_result_more_info_box.style.display = 'block'
         }
-        CALC_ANIMATION_IN()
+        calcAnimation.in()
     }, 200)
 }

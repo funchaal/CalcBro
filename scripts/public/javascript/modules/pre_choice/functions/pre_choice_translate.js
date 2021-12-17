@@ -1,4 +1,4 @@
-export default function PRE_CHOICE_TRANSLATE (event = null, distance = 0) {
+export default function preChoiceTranslate (event = null, distance = 0) {
     const pre_choice_mover = document.getElementById('pre_choice_mover')
     const pre_choice_buttonr_box = document.getElementById('pre_choice_buttonr_box')
     const pre_choice_buttonl_box = document.getElementById('pre_choice_buttonl_box')

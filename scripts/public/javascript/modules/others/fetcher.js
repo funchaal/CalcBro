@@ -1,9 +1,9 @@
-import NEW_PAGE_LOAD from "./new_page_load.js"
-import { LOADING_BAR_START, LOADING_BAR_FINISH } from "./loading_bar.js"
+import newPage from "../new_page/new_page.js"
+import loadingBar from "./loading_bar.js"
 
-export default function FETCHER(link, onpopstate = false) {
+export default function fetcher(link, onpopstate = false) {
     return new Promise(function(resolve, reject) {
-        LOADING_BAR_START()
+        loadingBar.start()
         if (!onpopstate) history.pushState('', '', link)
         fetch(link)
         .then((response) => response.text())
@@ -14,10 +14,10 @@ export default function FETCHER(link, onpopstate = false) {
             setTimeout(() => {
                 main.innerHTML = a
                 main.classList.remove('off')
-                NEW_PAGE_LOAD()
+                newPage()
             }, 200)
         })
-        .then(() => LOADING_BAR_FINISH())
+        .then(() => loadingBar.finish())
         .then(() => resolve())
     })
 }

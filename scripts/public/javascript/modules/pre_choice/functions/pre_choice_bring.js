@@ -1,6 +1,6 @@
-import PRE_CHOICE_TRANSLATE from "./pre_choice_translate.js";
+import preChoice from '../pre_choice.js'
 
-export default function PRE_CHOICE_BRING() {
+export default function preChoiceBring() {
     const selected = document.querySelector('#pre_choice_mover .on')
     if (!selected) return
     const b = window.innerWidth
@@ -17,5 +17,5 @@ export default function PRE_CHOICE_BRING() {
     } else {
         return
     }
-    PRE_CHOICE_TRANSLATE(null, e)            
+    preChoice.translate(null, e)            
 } 

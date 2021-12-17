@@ -1,6 +1,6 @@
-import PRE_CHOICE_BRING from "./pre_choice_bring.js";
+import preChoice from '../pre_choice.js'
 
-export default function PRE_CHOICE_SELECT() {
+export default function preChoiceSelect() {
     const url = window.location.pathname
     const on = document.querySelector('#pre_choice_mover .option.on')
     const select = document.querySelector(`#pre_choice_mover [link="${url}"]`)
@@ -13,5 +13,5 @@ export default function PRE_CHOICE_SELECT() {
         const options = document.querySelectorAll(`#pre_choice_mover > .option`)
         options.forEach((el) => {if (el.getAttribute('link').includes(a)) el.classList.add('on')})
     }
-    PRE_CHOICE_BRING()
+    preChoice.bring()
 }

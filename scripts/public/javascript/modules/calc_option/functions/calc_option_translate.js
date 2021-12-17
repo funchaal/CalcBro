@@ -1,6 +1,4 @@
-import { change_offset } from '../new_calc_content.js'
-
-export default function CALC_OPTION_TRANSLATE(event = null, distance = 0) {
+export default function calcOptionTranslate(event = null, distance = 0) {
     const calc_option = document.getElementById('calc_option')
     const calc_option_mover = document.querySelector('#calc_option ul')
     const calc_option_buttonl_box = document.getElementById('calc_option_button_left')
@@ -21,7 +19,7 @@ export default function CALC_OPTION_TRANSLATE(event = null, distance = 0) {
             move = 0
         }
         calc_option_mover.style.transform = `translateX(${move}px)`
-        change_offset(move)
+        calc_offset = move
     }
     if (Math.abs(move) === a) {
         calc_option_buttonl_box.classList.add('on')

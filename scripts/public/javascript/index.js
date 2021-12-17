@@ -1,14 +1,13 @@
-import FETCHER from './modules/fetcher.js'
-import SCREEN_MEDIA from './modules/screen_media.js'
-import THEME_CHANGER from './modules/theme_changer.js'
-import SEARCH_BAR_MANAGEMENT from './modules/search_bar/search_bar_manager.js'
-import CREATE_SHOW_RESULT_BUTTON from './modules/create/create_show_result_button.js'
-import PRE_CHOICE_TRANSLATE from './modules/pre_choice/pre_choice_translate.js'
-import NEW_PAGE_LOAD from './modules/new_page_load.js'
-import DATALIST_LOGIC from './modules/search_bar/datalist_logic.js'
-import DATALIST_HISTORY_MANAGEMENT from './modules/search_bar/datalist_history_management.js'
-import RESULT_BOX_MANAGEMENT from './modules/result_box_management.js'
-import CREATE_MENU from './modules/create/create_menu.js'
+import fetcher from './modules/others/fetcher.js'
+import preChoice from './modules/pre_choice/pre_choice.js'
+import newPage from './modules/new_page/new_page.js'
+import searchBar from './modules/search_bar/search_bar.js'
+import resultBoxManagement from './modules/others/result_box_management.js'
+import create from './modules/create/create.js'
+
+const theme_switch = document.getElementById('theme_switch')
+
+const logo = document.getElementById('logo')
 
 const pre_choice_mover = document.getElementById('pre_choice_mover')
 const pre_choice_buttonl = document.getElementById('pre_choice_buttonl')
@@ -22,9 +21,7 @@ const search_bar_x = document.querySelector('#search_bar_form > .x')
 const search_bar_icon = document.querySelector('header .icon-box.search-button img')
 const search_bar_arrow_back = document.querySelector('#search_bar_form .arrow-back')
 
-const logo = document.getElementById('logo')
-
-let calc_link
+let link_db
 
 String.prototype.toCapitalize__ = function() {
     return this.charAt(0).toUpperCase() + this.slice(1, this.length)
@@ -74,47 +71,133 @@ window.isFloat__ = function(num) {
     return Number(num) === num && num % 1 !== 0
 }
 
-fetch('/JSON/calc_link.json')
-.then((response) => response.json())
-.then((data) => calc_link = data)
-.then(() => {
-    CREATE_MENU(calc_link)
-})
+window.screenMedia = function(size = 499) {
+    if (window.innerWidth <= size) return true
+    else return false
+}
 
-window.addEventListener('popstate', () => FETCHER(window.location.href, true))
+window.writeOnClipboard = function (content) {
+    return new Promise(function (resolve, reject) {
+        if (!content) {
+            reject(new Error('empty'))
+            return
+        }
+        navigator.clipboard.writeText(content)
+            .then(() => resolve())
+            .catch((err) => reject(err))
+    })
+}
 
-if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) THEME_CHANGER('dark')
+window.message = function (message, type = 'normal') {
+    let container = document.getElementById('message_container')
+    if (!container) {
+        container = document.createElement('div')
+        container.id = 'message_container'
+        document.body.appendChild(container)
+    }
+    const func_1 = function(element) {
+        element.classList.remove('fade-in-down')
+        element.classList.add('fade-out')
+        setTimeout(() => {
+            element.remove()
+            const childs = container.childNodes
+            if (childs.length === 0) container.remove()
+        }, 400)
+    }
+    const message_box = document.createElement('div')
+    message_box.classList.add('message-box')
 
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => THEME_CHANGER(e.matches ? "dark" : "light"))
+    const span = document.createElement('span')
+    span.textContent = message
 
-window.addEventListener('blur', () => SEARCH_BAR_MANAGEMENT(false))
+    const img = document.createElement('img')
+    img.classList.add('x')
+
+    if (type === 'normal') {
+        message_box.classList.add('normal')
+        img.src = '/images/icons/x/x_dark.svg'
+    } else if (type === 'red') {
+        message_box.classList.add('red')
+        img.src = '/images/icons/x/x_light.svg'
+    } else if (type === 'green') {
+        message_box.classList.add('green')
+        img.src = '/images/icons/x/x_light.svg'
+    }
+
+    img.addEventListener('click', (e) => {
+        const parent = e.target.parentElement
+        func_1(parent)
+    })
+
+    message_box.appendChild(span)
+    message_box.appendChild(img)
+    container.appendChild(message_box)
+    message_box.classList.add('animated', 'fade-in-down')
+    setTimeout(() => func_1(message_box), 4000)
+}
+
+window.onEventElement = function(selector, callback, event = 'click') {
+    if (!callback) throw new Error('no callback')
+    document.querySelectorAll(selector).forEach((el) => {
+        el.addEventListener(event, (e) => callback(el, e))
+    })
+}
+
+window.themeChange = function(theme) {
+    const a = document.querySelector('[theme]')
+    const b = theme || theme_switch.checked ? 'dark' : 'light'
+    if (theme) {
+        a.setAttribute('theme', b)
+        if (theme === 'dark') theme_switch.checked = true
+        else if (theme === 'light') theme_switch.checked = false
+    } else {
+        a.setAttribute('theme', b)
+    }
+}
+
+window.calc_offset = 0
+
+fetch('/JSON/link_db.json')
+    .then((response) => response.json())
+    .then((data) => link_db = data)
+    .then(() => {
+        create.menu(link_db)
+    })
+
+window.addEventListener('popstate', () => fetcher(window.location.href, true))
+
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) themeChange('dark')
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => themeChange(e.matches ? "dark" : "light"))
+
+window.addEventListener('blur', () => searchBar.mediaManagement(false))
 
 logo.addEventListener('click', (e) => {
     e.preventDefault()
-    FETCHER('/home')
+    fetcher('/home')
 })
 
 theme_switch.addEventListener('change', () => {
-    THEME_CHANGER()
+    themeChange()
 })
 
-if (!SCREEN_MEDIA()) {
-    PRE_CHOICE_TRANSLATE()
-    pre_choice_mover.addEventListener('wheel', (e) => PRE_CHOICE_TRANSLATE(e))
-    pre_choice_buttonl.addEventListener('click', () => PRE_CHOICE_TRANSLATE(null, -200))
-    pre_choice_buttonr.addEventListener('click', () => PRE_CHOICE_TRANSLATE(null, 200))
+if (!screenMedia()) {
+    preChoice.translate()
+    pre_choice_mover.addEventListener('wheel', (e) => preChoice.translate(e))
+    pre_choice_buttonl.addEventListener('click', () => preChoice.translate(null, -200))
+    pre_choice_buttonr.addEventListener('click', () => preChoice.translate(null, 200))
 }
 
-NEW_PAGE_LOAD()
+newPage()
 
-search_bar_icon.addEventListener('click', () => SEARCH_BAR_MANAGEMENT(true))
+search_bar_icon.addEventListener('click', () => searchBar.mediaManagement(true))
 
-search_bar_arrow_back.addEventListener('click', () => SEARCH_BAR_MANAGEMENT(false))
+search_bar_arrow_back.addEventListener('click', () => searchBar.mediaManagement(false))
 
-search_bar.addEventListener('input', () => DATALIST_LOGIC(calc_link))
+search_bar.addEventListener('input', () => searchBar.datalist.logic(link_db))
 
 search_bar.addEventListener('focus', () => {
-    DATALIST_LOGIC(calc_link)
+    searchBar.datalist.logic(link_db)
     search_bar.select()
 })
 
@@ -125,36 +208,32 @@ search_bar_form.addEventListener('submit', (e) => {
     const link = option.getAttribute('link')
     const reference = option.textContent
     search_bar.value = reference
-    SEARCH_BAR_MANAGEMENT(false)
-    FETCHER(link)
-    DATALIST_HISTORY_MANAGEMENT(reference)
+    searchBar.mediaManagement(false)
+    fetcher(link)
+    searchBar.datalist.historyManagement(reference)
 })
 
 datalist.addEventListener('click', (e) => {
-    if (e.target.classList.contains('datalist')) SEARCH_BAR_MANAGEMENT(true)
+    if (e.target.classList.contains('datalist')) searchBar.mediaManagement(true)
 })
 
 search_bar_x.addEventListener('click', () => {
-    SEARCH_BAR_MANAGEMENT(true)
+    searchBar.mediaManagement(true)
     search_bar.value = ''
-    DATALIST_LOGIC(calc_link)
+    searchBar.datalist.logic(link_db)
 })
 
-document.querySelectorAll('#pre_choice .option').forEach((el) => {
-    el.addEventListener('click', (sel) => {
-        FETCHER(sel.target.getAttribute('link'))
-    })
-})
+onEventElement('#pre_choice .option', (el) => fetcher(el.getAttribute('link')))
 
 window.addEventListener('resize', () => {
-    if (!SCREEN_MEDIA()) {
-        if (SCREEN_MEDIA(849)) {
-            RESULT_BOX_MANAGEMENT(false)
+    if (!screenMedia()) {
+        if (screenMedia(849)) {
+            resultBoxManagement(false)
         }
-        SEARCH_BAR_MANAGEMENT(false)
-        PRE_CHOICE_TRANSLATE()
+        searchBar.mediaManagement(false)
+        preChoice.translate()
     }
-    CREATE_SHOW_RESULT_BUTTON()
+    create.showResultButton()
 })
 
 function calcSorteio() {
