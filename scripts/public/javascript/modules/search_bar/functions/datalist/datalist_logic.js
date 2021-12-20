@@ -103,6 +103,7 @@ export default function datalistLogic(db) {
         const link = element.getAttribute('link')
         search_bar.value = reference
         fetcher(link)
+        searchBar.mediaManagement(false)
         searchBar.datalist.historyManagement(reference)
     })
 }

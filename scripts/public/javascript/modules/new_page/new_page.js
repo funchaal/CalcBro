@@ -1,14 +1,14 @@
 import preChoice from '../pre_choice/pre_choice.js'
 import newCalcContent from "./functions/new_calc_content.js"
+import newSorteioContent from "./functions/new_sorteio_content.js"
 
 const new_page = {
     home: function() {
         return
     }, 
-    sorteio: function() {
-        if (screenMedia()) {
-            document.querySelector('sorteio_data_container').style.height = (window.innerHeight - 90) + 'px'
-        }
+    sorteio: {
+        'sorteio de numeros': newSorteioContent['sorteio de numeros'], 
+        'sorteio de elementos': newSorteioContent['sorteio de elementos']
     }, 
     calc: newCalcContent
 }
@@ -21,7 +21,7 @@ function clipBoardConfig() {
         writeOnClipboard(content)
             .then(() => {
                 el.classList.add('animate__animated', 'animate__flash')
-                message('copiado!')
+                message('copiado!', 'green')
             })
             .catch(() => {
                 el.classList.add('animate__animated', 'animate__headShake')
@@ -33,7 +33,7 @@ function clipBoardConfig() {
 export default function newPage() {
     clipBoardConfig()
     
-    const url = (window.location.pathname).split('/')
+    const url = (window.location.pathname).split('/').map((el) => el.replace(/-/g, ' '))
     url.shift()
     
     const title = url[0].toCapitalize__().replace('-', ' ')
@@ -48,6 +48,14 @@ export default function newPage() {
         new_page['calc']()
         return
     }
-    
-    new_page[url[0]]()
+
+    const key = url[0]
+    const subkey = url[1]
+    const func = new_page[key][subkey] || new_page[key]
+
+    try {
+        func()
+    } catch {
+        message('houve um erro.', 'red')
+    }
 }

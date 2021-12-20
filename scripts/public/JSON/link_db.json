@@ -1,6 +1,7 @@
 {
     "sorteio": {
-        "sorteio": "/sorteio"
+        "sorteio de números": "/sorteio/sorteio-de-numeros", 
+        "sorteio de elementos": "/sorteio/sorteio-de-elementos"
     }, 
     "porcentagem": {
         "1": "/porcentagem/1", 

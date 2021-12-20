@@ -235,26 +235,3 @@ window.addEventListener('resize', () => {
     }
     create.showResultButton()
 })
-
-function calcSorteio() {
-    GET_INPUTS()
-    let total = []
-    if (v3 > v1 - v2 + 1 && !valor_switch_1) {
-        alert('nao da')
-        return
-    }
-    for (let i = 1; i <= v3; i++) {
-        let a
-        if (!valor_switch_1) {
-            do {
-                a = !valor_switch_2 ? Math.floor(Math.random() * (v1 - v2 + 1)) + v2 : Number((Math.random() * (v1 - v2) + v2).toFixed(2))
-            } while (total.some((value) => value === a))
-            total.push(a)
-        } else {
-            a = !valor_switch_2 ? Math.floor(Math.random() * (v1 - v2 + 1)) + v2 : Number((Math.random() * (v1 - v2 + 1) + v2).toFixed(2))
-            total.push(a)
-        }
-    }
-    total = total.join(' ')
-    document.getElementById('sorteio_result_text').textContent = total
-}

@@ -306,7 +306,15 @@ router.get('/simplificar-fracao', (req, res) => {
 })
 
 router.get('/sorteio', (req, res) => {
-    res.render('./sorteio')
+    res.redirect('/sorteio/sorteio-de-numeros')
+})
+
+router.get('/sorteio/sorteio-de-numeros', (req, res) => {
+    res.render('./others/sorteio/sorteio_de_numeros')
+})
+
+router.get('/sorteio/sorteio-de-elementos', (req, res) => {
+    res.render('./others/sorteio/sorteio_de_elementos')
 })
 
 router.get('/verificar-numero-primo', (req, res) => {
@@ -326,7 +334,7 @@ router.get('/home', (req, res) => {
 })
 
 router.get('/', (req, res) => {
-    res.redirect('./others/home')
+    res.redirect('./home')
 })
 
 router.get('/estatistica', (req, res) => {

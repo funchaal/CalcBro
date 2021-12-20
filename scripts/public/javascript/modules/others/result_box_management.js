@@ -1,6 +1,7 @@
 export default function resultBoxManagement(open) {
     if (!screenMedia(849)) return
     const data_box_result = document.getElementById('data_box_result')
+    if (!data_box_result) return
     if (open) {
         const background = document.createElement('div')
 

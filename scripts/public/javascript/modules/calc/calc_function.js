@@ -669,6 +669,44 @@ const calc_function = {
             const total = count.length === set.length ? '-' : count.map((el) => set[el[1]]).join(', ')
             return total
         }
+    }, 
+    sorteio: {
+        'sorteio de números': function(v1, v2, v3, v4, v5) {
+            let total = []
+            for (let i = 1; i <= v3; i++) {
+                let a
+                if (!v4) {
+                    do {
+                        a = !v5 ? Math.floor(Math.random() * (v1 - v2 + 1)) + v2 : Number((Math.random() * (v1 - v2) + v2).toFixed(2))
+                    } while (total.some((val) => val === a))
+                    total.push(a)
+                } else {
+                    a = !v5 ? Math.floor(Math.random() * (v1 - v2 + 1)) + v2 : Number((Math.random() * (v1 - v2 + 1) + v2).toFixed(2))
+                    total.push(a)
+                }
+            }
+            total = total.join(' ')
+            return total
+        }, 
+        'sorteio de elementos': function(v1, v2, v3) {
+            let total = []
+            const array = v1.includes(',') ? v1.split(',').map((el) => el.trim()).filter((el) => !isEmpty__(el)) : [v1]
+            const max = array.length
+            for (let i = 1; i <= v2; i++) {
+                let a
+                if (!v3) {
+                    do {
+                        a = Math.floor(Math.random() * (max))
+                    } while (total.some((val) => val === a))
+                    total.push(a)
+                } else {
+                    a = Math.floor(Math.random() * (max))
+                    total.push(a)
+                }
+            }
+            total = total.map((el) => array[el]).join(', ')
+            return total
+        }
     }
 }
 
