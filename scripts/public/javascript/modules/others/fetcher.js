@@ -18,6 +18,20 @@ export default function fetcher(link, onpopstate = false) {
             }, 200)
         })
         .then(() => loadingBar.finish())
+        .then(() => {
+            if (!statistic_db_data.mostAcessed.fetchLink) {
+                statistic_db_data.mostAcessed.fetchLink = link
+                $.ajax({
+                    url: '/statistics', 
+                    method: 'POST',
+                    data: {
+                        mostAcessed: {
+                            link: link
+                        }
+                    }
+                })
+            }
+        })
         .then(() => resolve())
     })
 }

@@ -112,6 +112,7 @@ const newSorteioContent = {
         if (screenMedia()) {
             document.getElementById('data_container').style.height = (window.innerHeight - 55) + 'px'
             document.getElementById('data_container').style.minHeight = (window.innerHeight - 55) + 'px'
+            document.getElementById('calc_result_text').style.fontSize = '2em'
         }
 
         const form = document.getElementById('data_box_form')

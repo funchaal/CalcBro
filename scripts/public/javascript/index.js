@@ -22,6 +22,7 @@ const search_bar_icon = document.querySelector('header .icon-box.search-button i
 const search_bar_arrow_back = document.querySelector('#search_bar_form .arrow-back')
 
 let link_db
+let most_acessed_db
 
 String.prototype.toCapitalize__ = function() {
     return this.charAt(0).toUpperCase() + this.slice(1, this.length)
@@ -157,12 +158,39 @@ window.themeChange = function(theme) {
 
 window.calc_offset = 0
 
+window.statistic_db_data = {
+    mostAcessed: {
+        pageLink: window.location.pathname, 
+        fetchLink: ''
+    }
+}
+
 fetch('/JSON/link_db.json')
     .then((response) => response.json())
     .then((data) => link_db = data)
     .then(() => {
         create.menu(link_db)
     })
+
+fetch('/statistics')
+    .then((response) => response.json())
+    .then((data) => most_acessed_db = data)
+    .then(() => create.preChoice(most_acessed_db))
+
+
+window.addEventListener('beforeunload', () => {
+    if (!statistic_db_data.mostAcessed.fetchLink) {
+        $.ajax({
+            url: '/statistics', 
+            method: 'POST',
+            data: {
+                mostAcessed: {
+                    link: statistic_db_data.mostAcessed.pageLink
+                }
+            }
+        })
+    }
+})
 
 window.addEventListener('popstate', () => fetcher(window.location.href, true))
 
@@ -222,8 +250,6 @@ search_bar_x.addEventListener('click', () => {
     search_bar.value = ''
     searchBar.datalist.logic(link_db)
 })
-
-onEventElement('#pre_choice .option', (el) => fetcher(el.getAttribute('link')))
 
 window.addEventListener('resize', () => {
     if (!screenMedia()) {

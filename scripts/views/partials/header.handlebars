@@ -41,6 +41,13 @@
     </div>
     <nav id="pre_choice">
         <div id="pre_choice_mover">
+            {{#each data}}
+            {{#if subtitle}}
+                <button link="{{link}}" class="option">{{title}} - {{subtitle}}</button>
+                {{else}}
+                <button link="{{link}}" class="option">{{title}}</button>
+            {{/if}}
+            {{/each}}
             <button link="/regra-de-3/simples" class="option">Regra de 3</button>
             <button link="/porcentagem/1" class="option">Porcentagem</button>
             <button link="/notacao-cientifica" class="option">Notação científica</button>

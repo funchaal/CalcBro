@@ -10,7 +10,7 @@ router.get('/potencia', (req, res) => {
 })
 
 router.get('/trapezio', (req, res) => {
-    res.redirect('/calc/trapezio/area')
+    res.redirect('/trapezio/area')
 })
 
 router.get('/trapezio/area', (req, res) => {
