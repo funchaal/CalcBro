@@ -42,7 +42,7 @@ export default function newPage() {
     
     document.title = final_title
     
-    preChoice.select()
+    if (!screenMedia()) preChoice.select()
     
     if (!Object.keys(new_page).some((el) => el === url[0])) {
         new_page['calc']()

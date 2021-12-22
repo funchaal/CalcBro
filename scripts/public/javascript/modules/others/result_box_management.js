@@ -11,6 +11,7 @@ export default function resultBoxManagement(open) {
         
         data_box_result.classList.add('on')
         background.style.opacity = '100%'
+        background.style.visibility = 'visible'
     } else {
         const background_sel = document.getElementById('data_box_result_full_background')
         if (!background_sel) return
@@ -19,6 +20,6 @@ export default function resultBoxManagement(open) {
         data_box_result.scrollTop = 0
 
         background_sel.style.opacity = '0'
-        setTimeout(() => background_sel.remove(), 200)
+        setTimeout(() => background_sel.remove(), 400)
     }
 }

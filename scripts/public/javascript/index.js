@@ -9,10 +9,6 @@ const theme_switch = document.getElementById('theme_switch')
 
 const logo = document.getElementById('logo')
 
-const pre_choice_mover = document.getElementById('pre_choice_mover')
-const pre_choice_buttonl = document.getElementById('pre_choice_buttonl')
-const pre_choice_buttonr = document.getElementById('pre_choice_buttonr')
-
 const search_bar_form = document.getElementById('search_bar_form')
 const search_bar = document.getElementById('search_bar')
 const datalist = document.getElementById('datalist')
@@ -209,13 +205,6 @@ theme_switch.addEventListener('change', () => {
     themeChange()
 })
 
-if (!screenMedia()) {
-    preChoice.translate()
-    pre_choice_mover.addEventListener('wheel', (e) => preChoice.translate(e))
-    pre_choice_buttonl.addEventListener('click', () => preChoice.translate(null, -200))
-    pre_choice_buttonr.addEventListener('click', () => preChoice.translate(null, 200))
-}
-
 newPage()
 
 search_bar_icon.addEventListener('click', () => searchBar.mediaManagement(true))
@@ -259,5 +248,4 @@ window.addEventListener('resize', () => {
         searchBar.mediaManagement(false)
         preChoice.translate()
     }
-    create.showResultButton()
 })

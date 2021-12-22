@@ -3,11 +3,21 @@
         <span class="animate__animated animate__slideInUp">Escolhe alguma coisa...</span>
     </div>
     <div class="home-bottom-container">
-        <p>
-        </p>
+        <img src="/images/background/ete_fofo.png" alt="" id="ete_fofo">
     </div>
 </div>
 <style>
+    #pre_choice {
+        opacity: 100%;
+        visibility: visible;
+    }
+    #ete_fofo {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 500px;
+        max-width: 100vw;
+    }
     body::after {
         top: 60%;
         left: -100px;
@@ -41,13 +51,25 @@
         align-items: flex-end;
         flex-grow: 1;
         width: 100%;
-        padding: 20px;
     }
     .home-text-container span {
+        display: block;
         font-family: arial;
-        font-size: 5em;
+        margin-right: 80px;
+        font-size: 4.5em;
         font-weight: bolder;
         color: rgb(255, 255, 255);
+    }
+    @media (max-width: 499px) {
+        .home-text-container span {
+            font-size: 4em;
+        }
+        [theme="dark"] .home-text-container span {
+            color: rgb(255, 255, 255);
+        }
+        [theme="light"] .home-text-container span {
+            color: rgb(26, 26, 26)
+        }
     }
     .home-bottom-container p {
         max-width: 100vw;
@@ -65,5 +87,11 @@
         width: 300px;
         background-color: rgb(255, 255, 255);
         display: none;
+    }
+    #social_media_box {
+        display: flex;
+        background-color: transparent;
+        left: unset;
+        right: 20px;
     }
 </style>

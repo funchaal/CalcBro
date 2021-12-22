@@ -8,12 +8,13 @@
     "express-handlebars": "^6.0.2",
     "express": "^4.17.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
   "scripts": {
-    "start": "nodemon app.js", 
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon app.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Rafael Funchal",
   "license": "ISC"
 }

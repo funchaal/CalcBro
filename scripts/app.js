@@ -45,5 +45,5 @@ app.use('/', routes)
 const PORT = 1010
 
 app.listen(PORT, () => {
-    console.log('Servidor rodando! ')
+    console.log('Servidor rodando!')
 })
