@@ -4,15 +4,15 @@ const calcAnimation = {
     out: function() {
         const zzz = document.getElementById('zzz')
         const calc_result_content_container = document.getElementById('calc_result_content_container')
-        zzz.style.opacity = '0'
-        calc_result_content_container.style.opacity = '0'
+        zzz.classList.add('off')
+        calc_result_content_container.classList.remove('on')
     }, 
     in: function() {
         const zzz = document.getElementById('zzz')
         const calc_result_content_container = document.getElementById('calc_result_content_container')
         zzz.style.display = 'none'
         calc_result_content_container.style.display = 'flex'
-        calc_result_content_container.style.opacity = '1'
+        setTimeout(() => calc_result_content_container.classList.add('on'), 50)
         resultBoxManagement(true)
     }, 
     error: function() {

@@ -1,9 +1,17 @@
-<div class="home-main-container">
-    <div class="home-text-container">
-        <span class="animate__animated animate__slideInUp">Escolhe alguma coisa...</span>
+<div id="main_container" type="home">
+    <div class="title-container">
+        <span class="animate__animated animate__slideInUp">Escolhe <br>alguma coisa...</span>
     </div>
-    <div class="home-bottom-container">
-        <img src="/images/background/ete_fofo.png" alt="" id="ete_fofo">
+    <div class="bottom-container">
+        <a href="https://github.com/funchaal/CalcBro" target="_blank">
+            <button id="github_button">
+                <span>Ver projeto no github</span>
+                <div>
+                    <img src="/images/social/github_icon.svg" alt="">
+                </div>
+            </button>
+        </a>
+        <img src="/images/background/cute_ete_low_low.png" alt="" id="cute_ete">
     </div>
 </div>
 <style>
@@ -11,31 +19,68 @@
         opacity: 100%;
         visibility: visible;
     }
-    #ete_fofo {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        width: 500px;
-        max-width: 100vw;
+    #show_result_button {
+        display: none;
+    }
+    #social_media_box {
+        display: flex;
+        background-color: transparent;
+        left: unset;
+        right: 15px;
+        bottom: 15px;
+    }
+    body {
+        background-image: url('./images/background/montain_background.jpg');
     }
     body::after {
         top: 60%;
-        left: -100px;
+        left: -50vw;
         height: 60%;
-        width: 120vw;
+        width: 200vw;
         transform: rotate(-5deg);
         box-shadow: 0px 0px 10px 1px #00000079;
     }
-    .home-main-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
+    #main_container[type="home"] {
         align-items: flex-start;
-        padding-top: 85px;
-        width: 100vw;
-        height: 100%;
+        min-height: 680px;
     }
-    .home-text-container {
+    #github_button {
+        position: fixed;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 150;
+        cursor: pointer;
+        bottom: 0;
+        left: 0;
+        height: 40px;
+        margin: 20px;
+        padding: 15px;
+        padding-right: 10px;
+        border-radius: 15px;
+        background-color: rgb(36, 36, 36);
+        background-image: linear-gradient(to bottom right, rgb(36, 36, 36), rgb(10, 10, 10));
+        box-shadow: 2px 5px 10px 2px rgba(0, 0, 0, 0.301);
+    }
+    #github_button span {
+        display: block;
+        margin-right: 20px;
+        font-family: arial;
+        font-size: 1em;
+        font-weight: bold;
+        color: white;
+    }
+    #github_button div {
+        padding: 3px;
+        border-radius: 50%;
+        background-color: white;
+    }
+    #github_button div img {
+        display: block;
+        height: 22px;
+    }
+    [type="home"] .title-container {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -44,54 +89,56 @@
         height: 50%;
         padding: 40px;
     }
-    .home-bottom-container {
+    [type="home"] .bottom-container {
         display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
+        flex-direction: row;
+        justify-content: flex-start;
         align-items: flex-end;
         flex-grow: 1;
         width: 100%;
     }
-    .home-text-container span {
+    [type="home"] .title-container span {
         display: block;
+        margin-left: 2vw;
         font-family: arial;
         margin-right: 80px;
         font-size: 4.5em;
         font-weight: bolder;
         color: rgb(255, 255, 255);
     }
-    @media (max-width: 499px) {
-        .home-text-container span {
-            font-size: 4em;
+    #cute_ete {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 500px;
+        max-width: 100vw;
+    }
+    @media (max-width: 849px) {
+        #github_button {
+            padding: 10px;
         }
-        [theme="dark"] .home-text-container span {
+        #github_button span {
+            display: none;
+        }
+    }
+    @media (max-width: 499px) {
+        #github_button {
+            background-color: white;
+            background-image: linear-gradient(to bottom right, white, rgb(68, 68, 68));
+        }
+        #github_button div {
+            background-color: transparent;
+        }
+        [type="home"] .title-container span {
+            font-size: 4em;
+            margin-top: 20px;
+            margin-left: 0;
+        }
+        [theme="dark"] [type="home"] .title-container span {
             color: rgb(255, 255, 255);
         }
-        [theme="light"] .home-text-container span {
+        [theme="light"] [type="home"] .title-container span {
             color: rgb(26, 26, 26)
         }
-    }
-    .home-bottom-container p {
-        max-width: 100vw;
-        width: 500px;
-        height: 70%;
-        background-color: rgba(0, 0, 0, 0.897);
-        padding: 20px;
-        border-radius: 20px;
-        font-family: arial;
-        font-size: 1.3em;
-        color: rgb(255, 255, 255);
-    }
-    .home-lateral-container {
-        height: 100%;
-        width: 300px;
-        background-color: rgb(255, 255, 255);
-        display: none;
-    }
-    #social_media_box {
-        display: flex;
-        background-color: transparent;
-        left: unset;
-        right: 20px;
     }
 </style>

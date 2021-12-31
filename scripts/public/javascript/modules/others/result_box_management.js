@@ -2,24 +2,27 @@ export default function resultBoxManagement(open) {
     if (!screenMedia(849)) return
     const data_box_result = document.getElementById('data_box_result')
     if (!data_box_result) return
+    if (data_box_result.getAttribute('type') !== 'hide') return
     if (open) {
         const background = document.createElement('div')
 
         background.id = 'data_box_result_full_background'
-        background.addEventListener('mousedown', () => resultBoxManagement(false))
+        
         document.body.appendChild(background)
+
+        background.addEventListener('mousedown', () => resultBoxManagement(false))
         
         data_box_result.classList.add('on')
-        background.style.opacity = '100%'
-        background.style.visibility = 'visible'
+        setTimeout(() => background.classList.add('on'))
     } else {
-        const background_sel = document.getElementById('data_box_result_full_background')
-        if (!background_sel) return
+        const background = document.getElementById('data_box_result_full_background')
+        if (!background) return
+
+        data_box_result.scrollTo(0, 0)
 
         data_box_result.classList.remove('on')
-        data_box_result.scrollTop = 0
+        background.classList.remove('on')
 
-        background_sel.style.opacity = '0'
-        setTimeout(() => background_sel.remove(), 400)
+        setTimeout(() => background.remove(), 400)
     }
 }

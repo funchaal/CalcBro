@@ -17,9 +17,7 @@
     "estatística": {
         "média": "/estatistica/media", 
         "mediana": "/estatistica/mediana", 
-        "moda": "/estatistica/moda", 
-        "variante": "/estatistica/variante", 
-        "desvio padrão": "/estatistica/desvio-padrao"
+        "moda": "/estatistica/moda"
     },
     "regra de 3": {
         "simples": "/regra-de-3/simples", 

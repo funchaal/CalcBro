@@ -23,16 +23,23 @@ function clipBoardConfig() {
                 el.classList.add('animate__animated', 'animate__flash')
                 message('copiado!', 'green')
             })
-            .catch(() => {
+            .catch((err) => {
                 el.classList.add('animate__animated', 'animate__headShake')
-                message('nada a copiar.')
+                if (err.message === 'empty') message('nada a copiar')
+                else message('houve um erro ao copiar')
             })
     })
 }
 
 export default function newPage() {
     clipBoardConfig()
-    
+
+    if (screenMedia()) {
+        const main_container = document.getElementById('main_container')
+        main_container.style.height = `${window.innerHeight - 55}px`
+        main_container.style.minHeight = `${window.innerHeight - 55}px`
+    }
+
     const url = (window.location.pathname).split('/').map((el) => el.replace(/-/g, ' '))
     url.shift()
     
@@ -46,16 +53,17 @@ export default function newPage() {
     
     if (!Object.keys(new_page).some((el) => el === url[0])) {
         new_page['calc']()
-        return
+    } else {
+        const key = url[0]
+        const subkey = url[1]
+        const func = new_page[key][subkey] || new_page[key]
+        try {
+            func()
+        } catch {
+            message('houve um erro.', 'red')
+        }
     }
-
-    const key = url[0]
-    const subkey = url[1]
-    const func = new_page[key][subkey] || new_page[key]
-
-    try {
-        func()
-    } catch {
-        message('houve um erro.', 'red')
-    }
+    const page_title = document.querySelector('.data-box .header h1')
+    if (page_title) content_title = page_title.textContent
+    else content_title = ''
 }

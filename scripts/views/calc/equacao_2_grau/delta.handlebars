@@ -1,36 +1,36 @@
-<div id="main_container">
+<div id="main_container" type="calc">
     <div class="data-container">
         <form id="data_box_form" class="data-box calc-data-box-form">
             <div class="header">
-                <span>Equação 2º grau</span>
+                <h1>Equação 2º grau</h1>
                 <nav id="calc_option">
-                    <ul>
-                        <li><button type="button" link="/equacao-2-grau/bhaskara">Bhaskara</button></li>
-                        <li><button type="button" class="on" link="/equacao-2-grau/delta">Delta</button></li>
+                    <ul id="calc_option_mover">
+                        <li><button type="button" class="option"link="/equacao-2-grau/bhaskara">Bhaskara</button></li>
+                        <li><button type="button" class="option on" link="/equacao-2-grau/delta">Delta</button></li>
                     </ul>
-                    <div id="calc_option_button_left" class="button"><img class="arrow-thin" src="/images/icons/arrow/arrow_thin_dark.svg" alt=""></div>
-                    <div id="calc_option_button_right" class="button"><img class="arrow-thin" src="/images/icons/arrow/arrow_thin_dark.svg" alt=""></div>
+                    <div id="calc_option_control_buttonl_box" class="control-button"><img id="calc_option_control_buttonl" class="arrow-thin" src="/images/icons/arrow/arrow_thin_dark.svg" alt=""></div>
+                    <div id="calc_option_control_buttonr_box" class="control-button"><img id="calc_option_control_buttonr" class="arrow-thin" src="/images/icons/arrow/arrow_thin_dark.svg" alt=""></div>
                 </nav>
             </div>
             <div id="data_box_form_input">
-                <div class="calc-multiple-input-container">
+                <div class="multiple-input-box">
                     <div class="label-float">
                         <input type="number" step="any" id="valor_1" class="calc-input" autocomplete="off" placeholder=" " required>    
                         <label>Termo A </label>
                     </div>
                     <div class="label-float">
-                        <input type="number" step="any" id="valor_2" class="calc-input" autocomplete="off" placeholder=" " required>    
+                        <input type="number" step="any" id="valor_2" class="calc-input" autocomplete="off" placeholder=" ">    
                         <label>Termo B </label>
                     </div>
                 </div>
                 <div class="label-float">
-                    <input type="number" step="any" id="valor_3" class="calc-input" autocomplete="off" placeholder=" " required>    
+                    <input type="number" step="any" id="valor_3" class="calc-input" autocomplete="off" placeholder=" ">    
                     <label>Termo C (opicional) </label>
                 </div>
             </div>
-            <button type="submit" id="calc_button_calculate" form="data_box_form">Calcular</button>
+            <button type="submit" id="calculate_button" form="data_box_form">Calcular</button>
         </form>
-        <div id="data_box_result" class="data-box">
+        <div id="data_box_result" type="hide" class="data-box">
             <div class="header">
                 <span>Resultado</span>
             </div>
@@ -48,7 +48,9 @@
                     <span id="calc_more_info_text_3" class="calc-result-more-info-text"></span>
                 </div>
             </div>
-            <img copy-element="calc_result_text" class="clipboard-icon" src="/images/icons/clipboard/clipboard.svg">
+            <div class="clipboard-icon-box">
+                <img copy-element="calc_result_text" class="clipboard-icon" src="/images/icons/clipboard/clipboard.svg">
+            </div>
         </div>
     </div>
 </div>

@@ -1,19 +1,19 @@
-<div id="main_container">
+<div id="main_container" type="calc">
     <div class="data-container">
         <form id="data_box_form" class="data-box calc-data-box-form">
-            <section class="header">
-                <span>Regra de 3</span>
-                <div id="calc_option">
-                    <ul>
-                        <li><button type="button" link="/regra-de-3/simples">Simples</button></li>
-                        <li><button type="button" class="on" link="/regra-de-3/composta">Composta</button></li>
+            <div class="header">
+                <h1>Regra de 3</h1>
+                <nav id="calc_option">
+                    <ul id="calc_option_mover">
+                        <li><button type="button" class="option"link="/regra-de-3/simples">Simples</button></li>
+                        <li><button type="button" class="option on" link="/regra-de-3/composta">Composta</button></li>
                     </ul>'
-                    <div id="calc_option_button_left" class="button"><img class="arrow-thin" src="/images/icons/arrow/arrow_thin_dark.svg" alt=""></div>
-                    <div id="calc_option_button_right" class="button"><img class="arrow-thin" src="/images/icons/arrow/arrow_thin_dark.svg" alt=""></div>
-                </div>
-            </section>
+                    <div id="calc_option_control_buttonl_box" class="control-button"><img id="calc_option_control_buttonl" class="arrow-thin" src="/images/icons/arrow/arrow_thin_dark.svg" alt=""></div>
+                    <div id="calc_option_control_buttonr_box" class="control-button"><img id="calc_option_control_buttonr" class="arrow-thin" src="/images/icons/arrow/arrow_thin_dark.svg" alt=""></div>
+                </nav>
+            </div>
             <div id="data_box_form_input">
-                <section class="calc-multiple-input-container">
+                <div class="multiple-input-box">
                     <div class="label-float">
                         <input type="number" step="any" id="valor_1" class="calc-input" autocomplete="off" placeholder=" " required>    
                         <label>Valor 1 </label>
@@ -23,8 +23,8 @@
                         <input type="number" step="any" id="valor_2" class="calc-input" autocomplete="off" placeholder=" " required>    
                         <label>Valor 2 </label>
                     </div>
-                </section>
-                <section class="calc-multiple-input-container">
+                </div>
+                <div class="multiple-input-box">
                     <div class="label-float">
                         <input type="number" step="any" id="valor_3" class="calc-input" autocomplete="off" placeholder=" " required>    
                         <label>Valor 3 </label>
@@ -34,43 +34,45 @@
                         <input type="number" step="any" id="valor_4" class="calc-input" autocomplete="off" placeholder=" " required>    
                         <label>Valor 4 </label>
                     </div>
-                </section>
-                <section class="calc-multiple-input-container">
+                </div>
+                <div class="multiple-input-box">
                     <div class="label-float">
-                        <input type="number" step="any" id="valor_5" class="calc-input" autocomplete="off" placeholder=" ">    
+                        <input type="number" step="any" min="0" id="valor_5" class="calc-input" autocomplete="off" placeholder=" ">    
                         <label>Valor 5 (opcional) </label>
                     </div>
                     <span class="or-input-separation">-</span>
                     <div class="label-float">
-                        <input type="number" step="any" id="valor_6" class="calc-input" autocomplete="off" placeholder=" ">    
+                        <input type="number" step="any" min="0" id="valor_6" class="calc-input" autocomplete="off" placeholder=" ">    
                         <label>Valor 6 (opcional) </label>
                     </div>
-                </section>
-                <section class="calc-multiple-input-container">
+                </div>
+                <div class="multiple-input-box">
                     <div class="label-float">
-                        <input type="number" step="any" id="valor_7" class="calc-input" autocomplete="off" placeholder=" " required>    
+                        <input type="number" step="any" min="0" id="valor_7" class="calc-input" autocomplete="off" placeholder=" " required>    
                         <label>Valor 7 </label>
                     </div>
                     <span class="or-input-separation">-</span>
                     <div class="label-float">
-                        <input type="number" step="any" id="valor_8" class="calc-input" autocomplete="off" style="pointer-events: none; border-bottom: solid 2px black;" placeholder=" " disabled>    
+                        <input type="number" step="any" min="0" id="valor_8" class="calc-input" autocomplete="off" style="pointer-events: none; border-bottom: solid 2px black;" placeholder=" " disabled>    
                         <label>X</label>
                     </div>
-                </section>
+                </div>
             </div>
-            <button type="submit" id="calc_button_calculate" form="data_box_form">Calcular</button>
+            <button type="submit" id="calculate_button" form="data_box_form">Calcular</button>
         </form>
-        <div id="data_box_result" class="data-box">
-            <section class="header">
+        <div id="data_box_result" type="hide" class="data-box">
+            <div class="header">
                 <span>Resultado</span>
-            </section>
+            </div>
             <span id="zzz">zzz</span>
             <div id="calc_result_content_container">
                 <div id="calc_result_text_box">
                     <span id="calc_result_text"></span>
                 </div>
             </div>
-            <img copy-element="calc_result_text" class="clipboard-icon" src="/images/icons/clipboard/clipboard.svg">
+            <div class="clipboard-icon-box">
+                <img copy-element="calc_result_text" class="clipboard-icon" src="/images/icons/clipboard/clipboard.svg">
+            </div>
         </div>
     </div>
 </div>

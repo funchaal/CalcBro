@@ -96,7 +96,7 @@ const calc_function = {
                 return element.split('/')
             }).flat()
             if (!isEveryNumeric__(...e))  throw new Error ('insira corretamente os valores.')
-            const f = calc_funtions['m.d.c.']['m.d.c.'](e.join(','))
+            const f = calc_function['m.d.c.']['m.d.c.'](e.join(','))
             const a = f[0]
             const b = f[2]
             let c = []
@@ -355,7 +355,8 @@ const calc_function = {
     }, 
     circulo: {
         área: function (v1, v2, v3) {
-            if (!isNaN(v1)) {
+            if (!(v1 || v2)) throw new Error('preencha o valor do raio ou do perímetro')
+            if (v1) {
                 var total = (v1 ** 2) * (v3 || Math.PI)
                 var a = v1
                 var b = (2 * (v3 || Math.PI)) * v1
@@ -368,7 +369,8 @@ const calc_function = {
             return [total, b, a, c]
         }, 
         perímetro: function (v1, v2, v3) {
-            if (!isNaN(v1)) {
+            if (!(v1 || v2)) throw new Error('preencha o valor do raio ou da área')
+            if (v1) {
                 var total = (2 * (v3 || Math.PI)) * v1
                 var a =  (v1 ** 2) * (v3 || Math.PI)
                 var b = v1
@@ -381,7 +383,8 @@ const calc_function = {
             return [total, a, b, c]
         }, 
         raio: function (v1, v2, v3) {
-            if (!isNaN(v1)) {
+            if (!(v1 || v2)) throw new Error('preencha o valor do perímetro ou da área')
+            if (v1) {
                 var total = v1 / (2 * (v3 || Math.PI))
                 var a = ((total) ** 2) * (v3 || Math.PI)
                 var b = v1
@@ -400,7 +403,7 @@ const calc_function = {
     }, 
     quadrado: {
         área: function (v1, v2) {
-            if (!isNaN(v1)) {
+            if (v1) {
                 var total = v1 ** 2
                 var a = v1 * 4
                 var b = v1
@@ -412,7 +415,7 @@ const calc_function = {
             return [total, a, b]
         }, 
         perímetro: function (v1, v2) {
-            if (!isNaN(v1)) {
+            if (v1) {
                 var total = v1 * 4
                 var a = v1 ** 2
                 var b = v1
@@ -424,7 +427,7 @@ const calc_function = {
             return [total, a, b]
         }, 
         lado: function (v1, v2) {
-            if (!isNaN(v1)) {
+            if (v1) {
                 var total = v1 / 4
                 var a = v1
                 var b = (v1 / 4) ** 2
@@ -438,7 +441,7 @@ const calc_function = {
     }, 
     polígono: {
         área: function (v1, v2, v3) {
-            if (!isNaN(v1)) {
+            if (v1) {
                 var total = v1 * v3
                 var a =  v1 * 2
                 var b = v1
@@ -450,7 +453,7 @@ const calc_function = {
             return [total, a, b]
         },
         apótema: function (v1, v2, v3) {
-            if (!isNaN(v1)) {
+            if (v1) {
                 var total = v3 / v1
                 var a =  v1 * 2
                 var b = v1
@@ -462,19 +465,19 @@ const calc_function = {
             return [total, a, b]
         }, 
         semiperímetro: function (v1, v2, v3) {
-            const total = !isNaN(v1 || v2) ? v1 / v2 : v3 / 2
+            const total = (v1 || v2) ? v1 / v2 : v3 / 2
             return total
         }, 
         perímetro: function (v1, v2, v3) {
-            const total = !isNaN(v1 || v2) ? (v1 / v2) * 2 : v3 * 2
+            const total = (v1 || v2) ? (v1 / v2) * 2 : v3 * 2
             return total
         }, 
         'valor do lado': function (v1, v2, v3) {
-            const total = !isNaN(v1) ? (v1 * 2) / v3 : v2 / v3
+            const total = v1 ? (v1 * 2) / v3 : v2 / v3
             return total
         }, 
         'número de lados': function (v1, v2, v3) {
-            const total = !isNaN(v1) ? (v1 * 2) / v3 : v2 / v3
+            const total = v1 ? (v1 * 2) / v3 : v2 / v3
             return total
         }
     }, 
@@ -554,6 +557,7 @@ const calc_function = {
             return total
         }, 
         geratriz: function (v1, v2, v3, v4) {
+            if (!(v1 || v2)) throw new Error('preencha o valor do raio da base ou da área da base')
             if (v1) {
                 var total = Math.sqrt((v1 ** 2) + (v3 ** 2))
             } else {
@@ -572,14 +576,16 @@ const calc_function = {
             return total
         }, 
         'hipotenusa com ângulo': function (v1, v2, v3, v4) {
-            if (!isNaN(v1)) {
-                if (!isNaN(v3)) {
+            if (!(v1 || v2)) throw new Error('preencha ao menos um dos ângulos')
+            if (!(v3 || v4)) throw new Error('preencha o valor do cateto adjacente ou do cateto oposto')
+            if (v1) {
+                if (v3) {
                     var total = v3 / Math.cos((v1 * Math.PI) / 180)
                 } else {
                     var total = v4 / Math.sin((v1 * Math.PI) / 180)
                 }
             } else {
-                if (!isNaN(v3)) {
+                if (v3) {
                     var total = v3 / Math.cos(v2)
                 } else {
                     var total = v4 / Math.sin(v2)
@@ -588,14 +594,16 @@ const calc_function = {
             return total
         }, 
         'cateto adjacente': function (v1, v2, v3, v4) {
-            if (!isNaN(v1)) {
-                if (!isNaN(v3)) {
+            if (!(v1 || v2)) throw new Error('preencha ao menos um dos ângulos')
+            if (!(v3 || v4)) throw new Error('preencha o valor da hipotenusa ou do cateto oposto')
+            if (v1) {
+                if (v3) {
                     var total = Math.cos((v1 * Math.PI) / 180) * v3
                 } else {
                     var total = v4 / Math.tan((v1 * Math.PI) / 180)
                 }
             } else {
-                if (!isNaN(v3)) {
+                if (v3) {
                     var total = Math.cos(v2) * v3
                 } else {
                     var total = v4 / Math.tan(v2)
@@ -604,14 +612,16 @@ const calc_function = {
             return total
         }, 
         'cateto oposto': function(v1, v2, v3, v4) {
-            if (!isNaN(v1)) {
-                if (!isNaN(v3)) {
+            if (!(v1 || v2)) throw new Error('preencha ao menos um dos ângulos')
+            if (!(v3 || v4)) throw new Error('preencha o valor da hipotenusa ou do cateto adjacente')
+            if (v1) {
+                if (v3) {
                     var total = Math.sin((v1 * Math.PI) / 180) * v3
                 } else {
                     var total = Math.tan((v1 * Math.PI) / 180) * v4
                 }
             } else {
-                if (!isNaN(v3)) {
+                if (v3) {
                     var total = Math.sin(v2) * v3
                 } else {
                     var total = Math.tan(v2) * v4
@@ -623,11 +633,11 @@ const calc_function = {
     estatística: {
         média: function (v1) {
             let array = v1.replace(/ /g, '').split(',')
-            if (!isEveryNumeric__(...array))  throw new Error ('insira corretamente os valores.')
+            if (!isEveryNumeric__(...array)) throw new Error ('insira corretamente os valores')
             array = array.map((el) => Number(el))
             const sum = array.reduce((a, b) => a + b)
             const total = sum / array.length
-            const moda = calc_funtions['estatística']['moda'](v1)
+            const moda = calc_function['estatística']['moda'](v1)
             const len = array.length
             const mediana = isEven__(len) ? (array[((len / 2) - 1)] + array[((len / 2))]) / 2 : array[(Math.ceil(len / 2) - 1)]
             return [total, mediana, moda]
@@ -640,7 +650,7 @@ const calc_function = {
             const total = isEven__(len) ? (array[((len / 2) - 1)] + array[((len / 2))]) / 2 : array[(Math.ceil(len / 2) - 1)]
             const sum = array.reduce((a, b) => a + b)
             const media = sum / array.length
-            const moda = calc_funtions['estatística']['moda'](v1)
+            const moda = calc_function['estatística']['moda'](v1)
             return [total, media, moda]
         }, 
         moda: function (v1) {

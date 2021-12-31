@@ -33,5 +33,6 @@ export default function fetcher(link, onpopstate = false) {
             }
         })
         .then(() => resolve())
+        .catch(() => fetcher(link))
     })
 }

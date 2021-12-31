@@ -49,7 +49,7 @@ export default function datalistLogic(db) {
     if (string === '') {
         let data = localStorage.getItem('datalist_history')
         if (!data) {
-            datalist.innerHTML = '<span class="no-results">zzz</span>'
+            datalist.innerHTML = '<span class="no-data">zzz</span>'
             return
         }
         data = data.includes(',') ? data.split(',') : [data]
@@ -65,7 +65,7 @@ export default function datalistLogic(db) {
                         d = d.concat(`<button class="option" link="${db[a[i]][element]}" type="button">${element}</button>`)
                     })
                 }
-                options.push(`<li reference="${a[i]}" class="sub-option">${d}</li>`)
+                options.push(`<li reference="${a[i]}" class="sub-option-container">${d}</li>`)
             }
         }
         options = options.join('')
@@ -88,14 +88,14 @@ export default function datalistLogic(db) {
                         d = d.concat(`<button class="option" link="${db[a[i]][element]}" type="button">${element}</button>`)
                     })
                 }
-                options.push(`<li reference="${a[i]}" class="sub-option">${d}</li>`)
+                options.push(`<li reference="${a[i]}" class="sub-option-container">${d}</li>`)
             }
         }
         options = options.join('')
         if(options) {
             datalist.innerHTML = options
         } else {
-            datalist.innerHTML = '<span class="no-results">Sem correspondência.</span>'
+            datalist.innerHTML = '<span class="no-data">Sem correspondência.</span>'
         }
     }
     onEventElement('#datalist .option', (element) => {

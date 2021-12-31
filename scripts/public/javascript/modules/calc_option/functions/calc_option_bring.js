@@ -2,7 +2,7 @@ import calcOption from '../calc_option.js';
 
 export default function calcOptionBring() {
     const calc_option = document.getElementById('calc_option')
-    const a = document.querySelector('#calc_option .on')
+    const a = document.querySelector('#calc_option_mover .on')
     const b = calc_option.offsetWidth
     const c = screenMedia() ? a.offsetLeft - calc_offset : a.offsetLeft + calc_offset
     let d

@@ -33,11 +33,11 @@ window.isEmpty__ = function(string) {
 }
 
 window.isEveryEmpty__ = function(...num) {
-    return num.every((el) => el === '')
+    return num.every((el) => el === '' || el === undefined || el === null || el === 0)
 }
 
 window.isSomeEmpty__ = function(...num) {
-    return num.some((el) => el === '')
+    return num.some((el) => el === '' || el === undefined || el === null || el === 0)
 }
 
 window.isNumeric__ = function(string) {
@@ -87,50 +87,53 @@ window.writeOnClipboard = function (content) {
 
 window.message = function (message, type = 'normal') {
     let container = document.getElementById('message_container')
+
     if (!container) {
         container = document.createElement('div')
         container.id = 'message_container'
         document.body.appendChild(container)
     }
+
     const func_1 = function(element) {
         element.classList.remove('fade-in-down')
-        element.classList.add('fade-out')
+        element.classList.add('fade-out-up')
+
         setTimeout(() => {
             element.remove()
+
             const childs = container.childNodes
             if (childs.length === 0) container.remove()
-        }, 400)
+        }, 200)
     }
+
     const message_box = document.createElement('div')
     message_box.classList.add('message-box')
 
     const span = document.createElement('span')
     span.textContent = message
 
-    const img = document.createElement('img')
-    img.classList.add('x')
+    let remove_timer = 2000
 
-    if (type === 'normal') {
-        message_box.classList.add('normal')
-        img.src = '/images/icons/x/x_dark.svg'
-    } else if (type === 'red') {
-        message_box.classList.add('red')
-        img.src = '/images/icons/x/x_light.svg'
-    } else if (type === 'green') {
-        message_box.classList.add('green')
-        img.src = '/images/icons/x/x_light.svg'
-    }
+    if (type === 'normal') remove_timer = 800
 
-    img.addEventListener('click', (e) => {
-        const parent = e.target.parentElement
-        func_1(parent)
-    })
+    message_box.classList.add(type)
 
     message_box.appendChild(span)
-    message_box.appendChild(img)
+
+    let timer = 0
+
+    const atual_message = document.querySelectorAll('#message_container .message-box')
+    
+    if (atual_message[0]) {
+        atual_message.forEach((el) => func_1(el))
+        timer = 100
+    }
     container.appendChild(message_box)
-    message_box.classList.add('animated', 'fade-in-down')
-    setTimeout(() => func_1(message_box), 4000)
+
+    setTimeout(() => {
+        message_box.classList.add('animated', 'fade-in-down')
+        setTimeout(() => func_1(message_box), remove_timer)
+    }, timer)
 }
 
 window.onEventElement = function(selector, callback, event = 'click') {
@@ -152,7 +155,21 @@ window.themeChange = function(theme) {
     }
 }
 
+window.addEventListener('load', () => {
+    const load_blocker = document.getElementById('load_blocker')
+    load_blocker.classList.add('off')
+    setTimeout(() => load_blocker.remove(), 200)
+})
+
+window.addEventListener('popstate', () => fetcher(window.location.href, true))
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => themeChange(e.matches ? "dark" : "light"))
+
+window.addEventListener('blur', () => searchBar.mediaManagement(false))
+
 window.calc_offset = 0
+
+window.content_title = ''
 
 window.statistic_db_data = {
     mostAcessed: {
@@ -166,35 +183,15 @@ fetch('/JSON/link_db.json')
     .then((data) => link_db = data)
     .then(() => {
         create.menu(link_db)
+        searchBar.datalist.logic(link_db)
     })
 
 fetch('/statistics')
     .then((response) => response.json())
     .then((data) => most_acessed_db = data)
-    .then(() => create.preChoice(most_acessed_db))
-
-
-window.addEventListener('beforeunload', () => {
-    if (!statistic_db_data.mostAcessed.fetchLink) {
-        $.ajax({
-            url: '/statistics', 
-            method: 'POST',
-            data: {
-                mostAcessed: {
-                    link: statistic_db_data.mostAcessed.pageLink
-                }
-            }
-        })
-    }
-})
-
-window.addEventListener('popstate', () => fetcher(window.location.href, true))
+    .then(() => preChoice.create(most_acessed_db))
 
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) themeChange('dark')
-
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => themeChange(e.matches ? "dark" : "light"))
-
-window.addEventListener('blur', () => searchBar.mediaManagement(false))
 
 logo.addEventListener('click', (e) => {
     e.preventDefault()

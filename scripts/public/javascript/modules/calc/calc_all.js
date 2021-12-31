@@ -6,6 +6,7 @@ export default function calcAll(a, b, ...inputs) {
     const calc_result_text = document.getElementById('calc_result_text')
     const calc_result_more_info_texts = document.querySelectorAll('.calc-result-more-info-text')
     try {
+        if (isEveryEmpty__(...inputs)) throw new Error ('preencha os campos')
         var total = calc_function[a][b](...inputs)
     } catch (e) {
         message(e.message, 'red')
@@ -18,7 +19,7 @@ export default function calcAll(a, b, ...inputs) {
         else return element
     })
     if (total.some((element) => element !== null && typeof element === 'number' && isNaN(element))) {
-        message('preencha corretamente os campos.', 'red')
+        message('preencha corretamente os campos', 'red')
         return
     }
     calcAnimation.out()
