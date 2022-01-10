@@ -1,0 +1,98 @@
+<div id="main_container" class="user">
+    <form>
+        <div class="box">
+            <div class="header">
+                Sing Up
+            </div>
+            <div class="input-container">
+                <div class="label-float">
+                    <input type="text" name="name" id="name" placeholder=" ">    
+                    <label>Nome </label>
+                </div>
+                <div class="label-float">
+                    <input type="text" name="lastname" id="lastname" placeholder=" ">    
+                    <label>Sobrenome </label>
+                </div>
+                <div class="label-float">
+                    <input type="text" name="username" id="username" placeholder=" ">    
+                    <label>Username </label>
+                </div>
+                <div class="label-float">
+                    <input type="email" name="email" id="email" placeholder=" ">    
+                    <label>Email </label>
+                </div>
+                <div class="label-float">
+                    <input type="password" name="password" id="password" placeholder=" ">    
+                    <label>Password </label>
+                </div>
+            </div>
+            <button type="submit">Criar</button>
+        </div>
+        <div class="box">
+
+        </div>
+    </form>
+</div>
+<style>
+    header {
+        display: none;
+    }
+    #main_container.user {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgb(26, 26, 26);
+    }
+    #main_container.user form {
+        display: flex;
+        flex-direction: row;
+        width: 600px;
+        height: 70%;
+        border: 2px solid rgb(129, 129, 129);
+        border-radius: 25px;
+        background-color: white;
+    }
+    #main_container.user form .box {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 50%;
+        padding: 20px;
+    }
+    #main_container.user form .box:last-child {
+        border-bottom-right-radius: 25px;
+        border-top-right-radius: 25px;
+        background-image: url('../images/background/montain_background.jpg');
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+    #main_container.user form .header {
+        width: 100%;
+        height: 50px;
+        font-family: arial;
+        font-size: 1.4em;
+        font-weight: bold;
+        color: black
+    }
+    #main_container.user form .input-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        width: 100%;
+        flex-grow: 1;
+        margin-bottom: 50px;
+    }
+    #main_container.user form button[type="submit"] {
+        width: 100%;
+        height: 40px;
+        border-radius: 10px;
+        background-image: linear-gradient(to bottom right, blue, purple);
+        font-family: arial;
+        font-size: 1em;
+        font-weight: bold;
+        color: white;
+    }
+</style>

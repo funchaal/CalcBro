@@ -6,6 +6,7 @@ export default function preChoiceCreate(db) {
     const pre_choice_mover = document.getElementById('pre_choice_mover')
     const pre_choice_control_buttonl = document.getElementById('pre_choice_control_buttonl')
     const pre_choice_control_buttonr = document.getElementById('pre_choice_control_buttonr')
+    db.sort((a, b) => b.qtd - a.qtd)
     db.forEach((el) => {
         const button = document.createElement('button');
         button.textContent = el.subtitle ? `${el.title.toCapitalize__()} - ${el.subtitle.toCapitalize__()}` : el.title.toCapitalize__()
@@ -14,7 +15,7 @@ export default function preChoiceCreate(db) {
         button.classList.add('option')
         pre_choice_mover.append(button)
     })
-    onEventElement('#pre_choice .option', (el) => fetcher(el.getAttribute('link')))
+    onEventElement('#pre_choice_mover .option', (el) => fetcher(el.getAttribute('link')))
 
     if (screenMedia()) {
         preChoice.scroll()

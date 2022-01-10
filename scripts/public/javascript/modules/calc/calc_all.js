@@ -1,5 +1,7 @@
 import  calc_function from './calc_function.js'
 import calcAnimation from './calc_animation.js'
+import calc from './new_calc.js'
+import calcHistoryMenu from '../user/calc_history_menu.js'
 
 export default function calcAll(a, b, ...inputs) {
     const calc_result_more_info_box = document.getElementById('calc_result_more_info_box')
@@ -13,15 +15,40 @@ export default function calcAll(a, b, ...inputs) {
         calcAnimation.error()
         return
     }
+
     total = Array.isArray(total) ? total : [total]
     total = total.map((element) => {
         if (typeof element === 'number') return Number(element.toFixed(6))
         else return element
     })
+
+    let values = inputs
+
     if (total.some((element) => element !== null && typeof element === 'number' && isNaN(element))) {
         message('preencha corretamente os campos', 'red')
         return
     }
+
+    const labels = Array.from(document.querySelectorAll('#data_box_form .label-float .calc-input ~ label')).map((el, index) => {
+        const a = Array.from(el.parentElement.parentElement.childNodes).some(({ classList }) => classList && classList.contains('or-input-separation'))
+        if (a && !values[index]) {
+            values[index] = undefined
+            return undefined
+        } else if (!a && Array.from(el.parentElement.parentElement.childNodes).some(({ required }) => !required) && !values[index]) {
+            values[index] = null
+            return el.textContent
+        } else {
+            return el.textContent
+        }
+    }).filter(el => el !== undefined)
+    values = values.filter(el => el !== undefined)
+    const new_calc = new calc(a, b, window.location.pathname, total, labels, values)
+    if (!userData.history.calc.some(el => equals__(Object.values(new_calc), Object.values(el).slice(0, Object.values(el).length - 1)))) {
+        setUserData({ $push: { "history.calc": new_calc } }).then(() => {
+            calcHistoryMenu.add(...Object.values(userData.history.calc[userData.history.calc.length - 1]))
+        })
+    }
+
     calcAnimation.out()
     setTimeout(() => {
         calc_result_text.textContent = total[0]

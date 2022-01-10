@@ -31,6 +31,7 @@ export default function createMenu(db) {
                 li.classList.add('option')
                 li.setAttribute('link', db[key][subkey])
                 li.textContent = subkey
+                li.classList.add('text-tm-ifc')
                 sub_option_container.append(li)
             })
 
@@ -39,6 +40,7 @@ export default function createMenu(db) {
 
             li.classList.add('option')
             span.textContent = key
+            span.classList.add('text-tm-ifc')
 
             li.append(span, sub_option_container)
 
@@ -46,10 +48,11 @@ export default function createMenu(db) {
         } else {
             const li = document.createElement('li')
             const span = document.createElement('span')
-
+            
             li.classList.add('option')
             li.setAttribute('link', db[key][key])
             span.textContent = key
+            span.classList.add('text-tm-ifc')
 
             li.append(span)
 

@@ -4,6 +4,7 @@ import newPage from './modules/new_page/new_page.js'
 import searchBar from './modules/search_bar/search_bar.js'
 import resultBoxManagement from './modules/others/result_box_management.js'
 import create from './modules/create/create.js'
+import loginContainerManager from './modules/user/login_container_manager.js'
 
 const theme_switch = document.getElementById('theme_switch')
 
@@ -17,8 +18,34 @@ const search_bar_x = document.querySelector('#search_bar_form > .x')
 const search_bar_icon = document.querySelector('header .icon-box.search-button img')
 const search_bar_arrow_back = document.querySelector('#search_bar_form .arrow-back')
 
-let link_db
-let most_acessed_db
+let link_db = null
+window.userData = null
+window.userState = false
+
+window.addEventListener('beforeunload', (e) => {
+    e.preventDefault()
+    alert('tem coisa nao salva')
+})
+
+window.setUserData = function(data) {
+    return new Promise((resolve, reject) => {
+        fetch(`/api/user/user-data/update/${userData.user._id}`, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }, 
+            method: 'PUT', 
+            body: JSON.stringify(data)
+        }).then(res => res.json())
+        .then(data => {
+            userData = data
+            console.log(data)
+            console.log(userData)
+            resolve()
+        })
+        .catch(err => reject(err))
+    })
+}
 
 String.prototype.toCapitalize__ = function() {
     return this.charAt(0).toUpperCase() + this.slice(1, this.length)
@@ -26,6 +53,28 @@ String.prototype.toCapitalize__ = function() {
 
 String.prototype.toRaw__ = function() {
     return this.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '')
+}
+
+window.equals__ = function (array_1, array_2) {
+    if (!array_2)
+        return false;
+
+    if (array_1.length != array_2.length)
+        return false;
+
+    for (var i = 0, l=array_1.length; i < l; i++) {
+        // Check if we have nested array_2s
+        if (array_1[i] instanceof Array && array_2[i] instanceof Array) {
+            // recurse into the nested array_2s
+            if (!equals__(array_1[i], array_2[i]))
+                return false;       
+        }           
+        else if (array_1[i] != array_2[i]) { 
+            // Warning - two different object instances will never be equal: {x:20} != {x:20}
+            return false;   
+        }           
+    }       
+    return true;
 }
 
 window.isEmpty__ = function(string) {
@@ -138,18 +187,18 @@ window.message = function (message, type = 'normal') {
 
 window.onEventElement = function(selector, callback, event = 'click') {
     if (!callback) throw new Error('no callback')
-    document.querySelectorAll(selector).forEach((el) => {
-        el.addEventListener(event, (e) => callback(el, e))
+    document.querySelectorAll(selector).forEach((el, index) => {
+        el.addEventListener(event, (e) => callback(el, index, e))
     })
 }
 
-window.themeChange = function(theme) {
+window.theme = function(newTheme) {
     const a = document.querySelector('[theme]')
-    const b = theme || theme_switch.checked ? 'dark' : 'light'
-    if (theme) {
+    const b = newTheme || theme_switch.checked ? 'dark' : 'light'
+    if (newTheme) {
         a.setAttribute('theme', b)
-        if (theme === 'dark') theme_switch.checked = true
-        else if (theme === 'light') theme_switch.checked = false
+        if (newTheme === 'dark') theme_switch.checked = true
+        else if (newTheme === 'light') theme_switch.checked = false
     } else {
         a.setAttribute('theme', b)
     }
@@ -163,7 +212,7 @@ window.addEventListener('load', () => {
 
 window.addEventListener('popstate', () => fetcher(window.location.href, true))
 
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => themeChange(e.matches ? "dark" : "light"))
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => theme(e.matches ? "dark" : "light"))
 
 window.addEventListener('blur', () => searchBar.mediaManagement(false))
 
@@ -171,12 +220,7 @@ window.calc_offset = 0
 
 window.content_title = ''
 
-window.statistic_db_data = {
-    mostAcessed: {
-        pageLink: window.location.pathname, 
-        fetchLink: ''
-    }
-}
+document.querySelector('.icon-box.login').addEventListener('click', () => loginContainerManager())
 
 fetch('/JSON/link_db.json')
     .then((response) => response.json())
@@ -186,12 +230,11 @@ fetch('/JSON/link_db.json')
         searchBar.datalist.logic(link_db)
     })
 
-fetch('/statistics')
+fetch('/statistics/MostAcessed')
     .then((response) => response.json())
-    .then((data) => most_acessed_db = data)
-    .then(() => preChoice.create(most_acessed_db))
+    .then((data) => preChoice.create(data))
 
-if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) themeChange('dark')
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) theme('dark')
 
 logo.addEventListener('click', (e) => {
     e.preventDefault()
@@ -199,7 +242,7 @@ logo.addEventListener('click', (e) => {
 })
 
 theme_switch.addEventListener('change', () => {
-    themeChange()
+    theme()
 })
 
 newPage()
