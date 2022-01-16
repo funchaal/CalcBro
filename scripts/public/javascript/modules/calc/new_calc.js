@@ -1,10 +1,15 @@
-export default class calc {
-    constructor (title, subtitle, link, result, labels, inputs) {
-        this.title = title
-        this.subtitle = subtitle
-        this.link = link
-        this.result = result
-        this.labels = labels
-        this.inputs = inputs
+import calcHistory from "../user/calc_history.js"
+
+export default async function newCalc (title, subtitle, link, result, labels, inputs) {
+    const obj = {
+        title: title, 
+        subtitle: subtitle, 
+        link: link, 
+        result: result, 
+        labels: labels, 
+        inputs: inputs
     }
+
+    const data = User.userActivity.history.calc
+    if (!data.some(el => equals__(Object.values(obj), Object.values(el).slice(0, Object.values(el).length - 1)))) calcHistory.add(obj)
 }

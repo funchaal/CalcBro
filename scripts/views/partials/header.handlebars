@@ -6,11 +6,11 @@
         <form id="search_bar_form">
             <input list="search" type="search" name="" id="search_bar" class="div-tm-ifc text-tm-ifc" placeholder="Search..." autocomplete="off">
             <button type="submit">
-                <img src="/images/icons/lupa/lupa.svg" alt="">
-                <img src="/images/icons/arrow/arrow.svg" alt="">
+                <img src="/images/icons/lupa/lupa.svg" class="img-tm-ifc" alt="">
+                <img src="/images/icons/arrow/arrow.svg" class="img-tm-ifc" alt="">
             </button>
             <div class="x">
-                <img src="/images/icons/x/x_light.svg" alt="">
+                <img src="/images/icons/x/x_light.svg" class="img-tm-ifc" alt="">
             </div>
             <div class="arrow-back">
                 <img src="/images/icons/arrow/arrow.svg" alt="">
@@ -22,17 +22,19 @@
         </form>
         <div class="right-side side">
             <div class="icon-box login">
-                <button type="button">login</button>
+                <button type="button" class="cb-state">login
+                    <img src="/images/icons/loading/loading.svg" class="loading" alt="">
+                </button>
             </div>
             <div class="icon-box search-button">
-                <img src="/images/icons/lupa/lupa.svg" alt="">
+                <img src="/images/icons/lupa/lupa.svg" class="img-tm-ifc" alt="">
             </div>
             <div id="menu_icon_box" class="icon-box">
                 <div class="line img-tm-ifc"></div>
                 <div class="line img-tm-ifc"></div>
                 <div class="line img-tm-ifc"></div>
             </div>
-            <div id="menu_container" class="div-tm-ifc-hard">
+            <div id="menu_container" class="side-menu div-tm-ifc-hard">
                 <label id="theme_switch_box" class="switch">
                     <input type="checkbox" id="theme_switch">
                     <span class="slider round"></span>
@@ -41,27 +43,8 @@
         </div>
     </div>
     <nav id="pre_choice" class="div-tm-ifc">
-        <div id="pre_choice_mover">
-            <button link="/regra-de-3/simples" class="option">Regra de 3</button>
-            <button link="/porcentagem/1" class="option">Porcentagem</button>
-            <button link="/notacao-cientifica" class="option">Notação científica</button>
-            <button link="/simplificar-fracao" class="option">Simplificar fração</button>
-            <button link="/circulo" class="option">Circulo</button>
-            <button link="/progressao-geometrica/gerar" class="option">Progressão geométrica</button>
-            <button link="/trapezio/area" class="option">Trapézio</button>
-            <button link="/raiz" class="option">Raiz</button>
-            <button link="/potencia" class="option">Potência</button>
-            <button link="/progressao-aritmetica/gerar" class="option">Progressão aritmética</button>
-            <button link="/trigonometria/hipotenusa" class="option">Trigonometria</button>
-            <button link="/poligono/apotema" class="option">Polígono</button>
-            <button link="/retangulo/area" class="option">Retângulo</button>
-            <button link="/equacao-2-grau" class="option">Equação 2º</button>
-            <button link="/mmc" class="option">M.M.C.</button>
-            <button link="/mdc" class="option">Lozango</button>
-            <button link="/piramide/volume" class="option">Pirâmide</button>
-            <button link="/mdc" class="option">M.D.C.</button>
-        </div>
-        <div id="pre_choice_control_buttonr_box" class="control-button div-tm-ifc"><img id="pre_choice_control_buttonr" class="arrow-thin" src="/images/icons/arrow/arrow_thin_light.svg" alt=""></div>
-        <div id="pre_choice_control_buttonl_box" class="control-button div-tm-ifc"><img id="pre_choice_control_buttonl" class="arrow-thin" src="/images/icons/arrow/arrow_thin_light.svg" alt=""></div>
+        <div id="pre_choice_mover"></div>
+        <div id="pre_choice_control_buttonr_box" class="control-button"><img id="pre_choice_control_buttonr" class="arrow-thin" src="/images/icons/arrow/arrow_thin_light.svg" alt=""></div>
+        <div id="pre_choice_control_buttonl_box" class="control-button"><img id="pre_choice_control_buttonl" class="arrow-thin" src="/images/icons/arrow/arrow_thin_light.svg" alt=""></div>
     </nav>
 </header>

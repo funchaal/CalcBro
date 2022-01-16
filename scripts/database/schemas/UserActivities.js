@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const UsersDataSchema = new mongoose.Schema({
+const UserActivitiesSchema = new mongoose.Schema({
     history: {
         calc: [{
             title: {
@@ -29,12 +29,11 @@ const UsersDataSchema = new mongoose.Schema({
             }
         }]
     }, 
-    user: {
+    userId: {
         type: mongoose.SchemaTypes.ObjectId, 
         required: true, 
         unique: true, 
-        ref: 'Users'
     }
 })
 
-module.exports = mongoose.model('UsersData', UsersDataSchema)
+module.exports = mongoose.model('UserActivities', UserActivitiesSchema)

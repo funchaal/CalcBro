@@ -4,7 +4,10 @@ import newPage from './modules/new_page/new_page.js'
 import searchBar from './modules/search_bar/search_bar.js'
 import resultBoxManagement from './modules/others/result_box_management.js'
 import create from './modules/create/create.js'
-import loginContainerManager from './modules/user/login_container_manager.js'
+import userLog from './modules/user/user_log/user_log.js'
+import login from "./modules/user/user_log/functions/login.js"
+import logged from './modules/user/functions/logged.js'
+import unlogged from './modules/user/functions/unlogged.js'
 
 const theme_switch = document.getElementById('theme_switch')
 
@@ -19,31 +22,60 @@ const search_bar_icon = document.querySelector('header .icon-box.search-button i
 const search_bar_arrow_back = document.querySelector('#search_bar_form .arrow-back')
 
 let link_db = null
-window.userData = null
-window.userState = false
+window.User = {}
+window.UserState = false
 
-window.addEventListener('beforeunload', (e) => {
-    e.preventDefault()
-    alert('tem coisa nao salva')
-})
+window.setUserActivity = async function (body) {
+    console.log(User)
+    console.log(User._id)
+    const res = await fetch(`/api/user/userActivity/update/${User._id}`, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }, 
+        method: 'PUT', 
+        body: JSON.stringify(body)
+    })
+    const data = await res.json()
+    User.userActivity = data
+}
 
-window.setUserData = function(data) {
-    return new Promise((resolve, reject) => {
-        fetch(`/api/user/user-data/update/${userData.user._id}`, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }, 
-            method: 'PUT', 
-            body: JSON.stringify(data)
-        }).then(res => res.json())
-        .then(data => {
-            userData = data
-            console.log(data)
-            console.log(userData)
-            resolve()
-        })
-        .catch(err => reject(err))
+window.setUserState = async function (state) {
+    UserState = state
+    if (state) {
+        await logged()
+    } else {
+        unlogged()
+    }
+}
+
+window.setCookie = function (cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    let expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+window.getCookie = function (cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+}
+
+if (getCookie('username')) {
+    login({
+        username: getCookie('username'), 
+        token: getCookie('token')
     })
 }
 
@@ -135,6 +167,7 @@ window.writeOnClipboard = function (content) {
 }
 
 window.message = function (message, type = 'normal') {
+    if (!message) return
     let container = document.getElementById('message_container')
 
     if (!container) {
@@ -220,19 +253,28 @@ window.calc_offset = 0
 
 window.content_title = ''
 
-document.querySelector('.icon-box.login').addEventListener('click', () => loginContainerManager())
+const h_login_btn = document.querySelector('.icon-box.login button')
+
+h_login_btn.addEventListener('click', () => {
+    h_login_btn.classList.add('cb-state-on')
+    h_login_btn.disabled = true
+    userLog()
+})
 
 fetch('/JSON/link_db.json')
-    .then((response) => response.json())
-    .then((data) => link_db = data)
-    .then(() => {
-        create.menu(link_db)
-        searchBar.datalist.logic(link_db)
-    })
+.then((response) => response.json())
+.then((data) => link_db = data)
+.then(() => {
+    create.menu(link_db)
+    searchBar.datalist.logic(link_db)
+})
 
 fetch('/statistics/MostAcessed')
-    .then((response) => response.json())
-    .then((data) => preChoice.create(data))
+.then((response) => response.json())
+.then((data) => {
+    preChoice.create(data)
+    newPage()
+    })
 
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) theme('dark')
 
@@ -244,8 +286,6 @@ logo.addEventListener('click', (e) => {
 theme_switch.addEventListener('change', () => {
     theme()
 })
-
-newPage()
 
 search_bar_icon.addEventListener('click', () => searchBar.mediaManagement(true))
 
