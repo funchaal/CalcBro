@@ -27,7 +27,7 @@ function newOption (title, subtitle, link, result, labels, inputs, id) {
 }
 
 const calcHistory = {
-    create: function() {
+    create: async function() {
         calcHistory.icon_box = document.querySelector('.header .icon-box.calc-history')
         calcHistory.icon = document.querySelector('.header .icon-box.calc-history img')
         calcHistory.x = document.querySelector('#calc_history_menu .header .x')

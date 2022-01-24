@@ -7,7 +7,8 @@ export default function unlogged() {
         User = null
 
         setCookie('username', '', -1)
-        setCookie('token', '', -1)
+        setCookie('deviceToken', '', -1)
+        setCookie('sessionToken', '', -1)
 
         const login = `<div class="icon-box login"><button type="button" class="cb-state">Login
                                 <img src="/images/icons/loading/loading.svg" class="loading" alt="">

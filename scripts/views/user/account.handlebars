@@ -1,0 +1,111 @@
+<div id="main_container" type="user_config">
+    <div class="box div-tm-ifc" id="user_info">
+        <div class="box">
+        <div class="picture-box">
+            <img src="" user-data="profilePicture" alt="" class="profile-picture">
+            <img src="/images/icons/camera/camera.svg" class="change-profile-picture" alt="">
+        </div>
+        <span class="username text-tm-ifc" user-data="username"></span>
+        <span class="fullname text-tm-ifc" user-data="fullname"></span>
+            <span class="email" user-data="email"></span>
+        </div>
+        <div id="config_option">
+            <button class="option btn on btn-config text-tm-ifc" link="/user/account">
+                Conta
+            </button>
+            <button class="option btn btn-config text-tm-ifc" link="/user/preferences">
+                Preferências
+            </button>
+            <button class="option btn btn-config text-tm-ifc" link="/user/sessions">
+                Sessões
+            </button>
+            <button class="option btn btn-config text-tm-ifc" link="/user/about">
+                Sobre o site
+            </button>
+        </div>
+    </div>
+    <div class="box div-tm-ifc" id="config_box">
+        <section id="account_data">
+            <span class="text-tm-ifc">Dados da conta</span>
+            <div class="content">
+                <form>
+                    <div class="label-float">
+                        <input type="text" value="..." name="name" tag="name" autocomplete="off" placeholder=" ">    
+                        <label>Nome </label>
+                        <button type="submit" class="btn-main btn cb-state disabled">Salvar
+                            <img src="/images/icons/loading/loading.svg" class="loading" alt="">
+                        </button>
+                    </div>
+                </form>
+                <form>
+                    <div class="label-float">
+                        <input type="text" value="..." name="lastname" tag="lastname" autocomplete="off" placeholder=" ">    
+                        <label>Sobrenome </label>
+                        <button type="submit" class="btn-main btn cb-state disabled">Salvar
+                            <img src="/images/icons/loading/loading.svg" class="loading" alt="">
+                        </button>
+                    </div>
+                </form>
+                <form>
+                    <div class="label-float">
+                        <input type="text" value="..." name="username" tag="username" autocomplete="off" placeholder=" ">    
+                        <label>Username </label>
+                        <button type="submit" class="btn-main btn cb-state disabled">Salvar
+                            <img src="/images/icons/loading/loading.svg" class="loading" alt="">
+                        </button>
+                    </div>
+                </form>
+                <form>
+                    <div class="label-float">
+                        <input type="email" value="..." name="email" tag="email" autocomplete="off" placeholder=" ">    
+                        <label>Email </label>
+                        <button type="submit" class="btn-main btn cb-state disabled">Salvar
+                            <img src="/images/icons/loading/loading.svg" class="loading" alt="">
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+        <section id="change_password">
+            <span class="text-tm-ifc">Alterar senha</span>
+            <div class="content">
+                <form for="upt_name">
+                    <div class="label-float">
+                        <input type="password" name="atual_password" autocomplete="off" placeholder=" " required>    
+                        <label>Senha atual </label>
+                    </div>
+                    <div class="label-float">
+                        <input type="password" name="new_password" autocomplete="off" placeholder=" " required>    
+                        <label>Senha nova </label>
+                    </div>
+                    <button type="submit" class="btn-main btn cb-state disabled" style="margin-top: 30px;">Alterar
+                        <img src="/images/icons/loading/loading.svg" class="loading" alt="">
+                    </button>
+                </form>
+            </div>
+        </section>
+    </div>
+    </div>
+</div>
+<style>
+    header {
+        box-shadow: none;
+    }
+    header > .header {
+        border: none;
+    }
+    #show_result_button {
+        display: none;
+    }
+    #social_media_box {
+        display: none;
+    }
+    #pre_choice {
+        display: none;
+    }
+    @media (min-width: 500px) {
+        main {
+            padding-top: 45px;
+        }
+    }
+</style>

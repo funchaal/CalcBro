@@ -8,7 +8,7 @@ export default function preChoiceBring() {
     const d = selected.offsetWidth
     let e
     if (c + d + 100 > b) {
-        e = c - b + (b / 4) + (d / 2)
+        e = c - b + (b / 4) + (d)
         if (e < 0) return
     } else if (c - d - 100 < 0) {
         e = -c + (b / 4) + (d / 2)

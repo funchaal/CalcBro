@@ -5,7 +5,7 @@ export default function calcOptionTranslate(event = null, distance = 0) {
     const calc_option_control_buttonr_box = document.getElementById('calc_option_control_buttonr_box')
     const a = calc_option_mover.offsetWidth - calc_option.offsetWidth
     const b = +calc_option_mover.style.transform.replace(/[^\d.]/g, '')
-    const c = event === null ? distance : event.deltaY
+    const c = event === null ? distance : (event.deltaY || event.deltaX)
     let move = -b - c
     if (a <= 0) {
         calc_option_control_buttonl_box.style.display = 'none'

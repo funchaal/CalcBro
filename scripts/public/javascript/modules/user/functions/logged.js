@@ -1,5 +1,6 @@
 import calcHistory from '../calc_history.js'
 import userMenu from '../user_menu.js'
+import fill from './fill.js'
 
 export default async function logged() {
     const user_menu = await fetch('/html/user_menu.html').then(res => res.text())
@@ -11,6 +12,8 @@ export default async function logged() {
     right_side.insertAdjacentHTML('afterbegin', user_menu)
     right_side.insertAdjacentHTML('afterbegin', calc_history)
 
-    calcHistory.create()
-    userMenu.create()
+    await calcHistory.create()
+    await userMenu.create()
+
+    fill()
 }

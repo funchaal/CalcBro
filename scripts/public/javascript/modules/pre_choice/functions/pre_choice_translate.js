@@ -5,7 +5,7 @@ export default function preChoiceTranslate (event = null, distance = 0) {
     
     const a = pre_choice_mover.offsetWidth - window.innerWidth
     const b = +pre_choice_mover.style.transform.replace(/[^\d.]/g, '')
-    const c = event === null ? distance : event.deltaY
+    const c = event === null ? distance : (event.deltaY || event.deltaX)
     let move = -b - c
 
     if (a <= 0) return

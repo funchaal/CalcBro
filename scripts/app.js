@@ -9,6 +9,7 @@ const handlebars = require('express-handlebars')
 const bodyParser = require('body-parser')
 const app = express()
 const routes = require('./routes/routes.js')
+const userRoutes = require('./routes/user_routes.js')
 const path = require('path')
 const User = require('./database/schemas/Users.js')
 const MostAcessed = require('./database/schemas/MostAcessed.js')
@@ -40,6 +41,8 @@ app.get('/statistics/MostAcessed', async (req, res) => {
 
 app.use('/', routes)
 
+app.use('/user', userRoutes)
+
 app.post('/api/user/new', async (req, res) => {
     try {
         const username = req.body.username
@@ -68,9 +71,10 @@ app.post('/api/user/new', async (req, res) => {
                 lastname: lastname, 
                 username: username,
                 email: email, 
+                token: await uidgen.generate(), 
                 password: crypted
             })
-            const token = req.body.keep ? await keepUser(username) : null
+            const [deviceToken, sessionToken] = req.body.keep ? await keepUser(username) : null
             res.status(201).json({ message: 'Usuário criado!', User: {
                 _id: user._id, 
                 name: user.name, 
@@ -79,43 +83,68 @@ app.post('/api/user/new', async (req, res) => {
                 fullname: user.fullname, 
                 email: user.email, 
                 userActivity: user.userActivity, 
-                token: token
+                token: user.token, 
+                session: {
+                    deviceToken: deviceToken, 
+                    sessionToken: sessionToken
+                }
             } })
         }
     } catch(err) {
-        console.log(err.message)
         res.sendStatus(500)
     }
 })
 
-async function keepUser(username) {
-    const token = await uidgen.generate()
-    await User.updateOne({ username: username }, { token: token })
-    return token
+async function keepUser(username, deviceToken) {
+    if (!deviceToken) {
+        var tokens = [await uidgen.generate(), await uidgen.generate()]
+        await User.updateOne({ username: username }, {$push: { session: {
+            deviceToken: tokens[0], 
+            sessionToken: tokens[1]
+        } }})
+    } else {
+        var tokens = await uidgen.generate()
+        await User.updateOne({$and: [{ username: username }, { 'session.deviceToken': deviceToken }]}, {$set: {'session.$.sessionToken': tokens}})
+    }
+    return tokens
 }
 
 app.post('/api/user/login', async (req, res) => {
     const username = req.body.username
-    if (req.body.token) {
-        const user = await User.findOne({$and: [{ username: username }, { token: req.body.token }]}).populate('userActivity')
-        const token = await keepUser(req.body.username)
-        res.status(200).json({ message: `Bem vindo de volta ${user.name}`, User: {
-            _id: user._id, 
-            name: user.name, 
-            lastname: user.lastname, 
-            username: user.username, 
-            fullname: user.fullname, 
-            email: user.email, 
-            userActivity: user.userActivity, 
-            token: token
-        } })
+    if (req.body.deviceToken) {
+        const deviceToken = req.body.deviceToken
+        const user = await User.findOne({$and: [{ username: username }, { session: {$elemMatch: { deviceToken: deviceToken, sessionToken: req.body.sessionToken }} }]}).populate('userActivity')
+        if (user) {
+            const sessionToken = await keepUser(req.body.username, deviceToken)
+            const userToken = await uidgen.generate()
+            await User.updateOne({ username: username }, { token: userToken })
+            res.status(200).json({ message: `Bem vindo de volta ${user.name}`, User: {
+                _id: user._id, 
+                name: user.name, 
+                lastname: user.lastname, 
+                username: user.username, 
+                fullname: user.fullname, 
+                email: user.email, 
+                userActivity: user.userActivity, 
+                token: userToken, 
+                session: {
+                    deviceToken: deviceToken, 
+                    sessionToken: sessionToken
+                }
+            } })
+        } else {
+            res.status(401).json({ message: 'Erro de segurança' })
+        }
     } else {
         const user = await User.findOne({$or: [ {username: username}, {email: username} ]}).populate('userActivity')
         if (user) {
-            const token = req.body.keep ? await keepUser(req.body.username) : null
             const password = req.body.password
             
             if (await bcrypt.compare(password, user.password)) {
+                const [deviceToken, sessionToken] = req.body.keep ? await keepUser(req.body.username) : [null, null]
+                const userToken = await uidgen.generate()
+                await User.updateOne({ username: username }, { token: userToken })
+
                 res.status(200).json({ message: 'Logado', User: {
                     _id: user._id, 
                     name: user.name, 
@@ -124,7 +153,11 @@ app.post('/api/user/login', async (req, res) => {
                     fullname: user.fullname, 
                     email: user.email, 
                     userActivity: user.userActivity, 
-                    token: token
+                    token: userToken, 
+                    session: {
+                        deviceToken: deviceToken, 
+                        sessionToken: sessionToken
+                    }
                 } })
             } else {
                 res.status(401).json({ message: 'Senha incorreta' })
@@ -135,46 +168,63 @@ app.post('/api/user/login', async (req, res) => {
     }
 })
 
-app.put('/api/user/update/:id', async (req, res) => {
-    try {
-        const userId = req.params.id
-        const username = req.body.username
-        const email = req.body.email
-    
-        const message = {
-            success: false, 
-            problem: []
+app.put('/api/user/update/account-data/:id/:token', async (req, res) => {
+    const id = req.params.id
+    const has_user = await User.findOne({$and: [{ _id: id }, { token: req.params.token }]})
+
+    if (has_user) {
+        if (req.body.username) {
+            if (await User.exists({$and: [{ _id: { $ne: id }}, { username: req.body.username }]})) res.status(409).json({ message: 'Nome de usuário já existente' })
+        } else if (req.body.email) {
+            if (await User.exists({$and: [{ _id: { $ne: id }}, { email: req.body.email }]})) res.status(409).json({ message: 'Email já existente' })
         }
-        
-        if (await User.exists({$and: [{ _id: { $ne: userId }}, { username: username }]})) message.problem.push('username')
-        if (await User.exists({$and: [{ _id: { $ne: userId }}, { username: email }]})) message.problem.push('email')
-        
-        if (message.problem.length > 0) {
-            res.json(message)
-        } else {
-            const name = req.body.name
-            const lastname = req.body.lastname
-    
-            await User.updateOne({ _id: userId }, {
-                name: name, 
-                lastname: lastname, 
-                username: username,
-                email: email
-            })
-            
-            message.UserActivity = await UserActivity.findOne({ user: userId }).populate('user')
-            res.json(message)
-        }
-    } catch(err) {
-        res.sendStatus(500)
+
+        await User.updateOne({ _id: id }, req.body)
+
+        const user = await User.findOne({ _id: id }).populate('userActivity')
+
+        res.status(200).json({
+            message: 'Dados atualizados', 
+            User: user
+        })
+    } else {
+        res.status(401).json({ message: 'Erro de segurança' })
     }
 })
 
-app.put('/api/user/userActivity/update/:id', async (req, res) => {
-    console.log(req.params.id)
-    await UserActivity.updateOne({ userId: req.params.id }, req.body)
-    const data = await UserActivity.findOne({ userId: req.params.id })
-    res.status(200).json(data)
+app.put('/api/user/update/password/:id/:token', async (req, res) => {
+    const id = req.params.id
+    const token = req.params.token
+    const user = await User.findOne({$and: [{_id: id, token: token}] })
+
+    if (user) {
+        if (await bcrypt.compare(req.body.atualPassword, user.password)) {
+            const crypted = await bcrypt.hash(req.body.newPassword, 10)
+            await User.updateOne({ _id: id }, {
+                password: crypted
+            })
+            res.status(200).json({ message: 'Senha alterada' })
+        } else {
+            res.status(401).json({ message: 'Senha incorreta' })
+        }
+    } else {
+        res.status(401).json({ message: 'Erro de segurança' })
+    }
+})
+
+app.put('/api/user/user-activity/update/:id/:token', async (req, res) => {
+    const id = req.params.id
+    const token = req.params.token
+    const user = await User.exists({$and: [{_id: id, token: token}] })
+
+    if (user) {
+        await UserActivity.updateOne({ userId: id }, req.body)
+
+        const data = await UserActivity.findOne({ userId: req.params.id })
+        res.status(200).json(data)
+    } else {
+        res.sendStatus(401)
+    }
 })
 
 const PORT = 1010

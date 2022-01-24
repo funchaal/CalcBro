@@ -13,22 +13,11 @@ const theme_switch = document.getElementById('theme_switch')
 
 const logo = document.getElementById('logo')
 
-const search_bar_form = document.getElementById('search_bar_form')
-const search_bar = document.getElementById('search_bar')
-const datalist = document.getElementById('datalist')
-
-const search_bar_x = document.querySelector('#search_bar_form > .x')
-const search_bar_icon = document.querySelector('header .icon-box.search-button img')
-const search_bar_arrow_back = document.querySelector('#search_bar_form .arrow-back')
-
-let link_db = null
 window.User = {}
 window.UserState = false
 
 window.setUserActivity = async function (body) {
-    console.log(User)
-    console.log(User._id)
-    const res = await fetch(`/api/user/userActivity/update/${User._id}`, {
+    const res = await fetch(`/api/user/user-activity/update/${User._id}/${User.token}`, {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -72,13 +61,6 @@ window.getCookie = function (cname) {
     return "";
 }
 
-if (getCookie('username')) {
-    login({
-        username: getCookie('username'), 
-        token: getCookie('token')
-    })
-}
-
 String.prototype.toCapitalize__ = function() {
     return this.charAt(0).toUpperCase() + this.slice(1, this.length)
 }
@@ -89,17 +71,17 @@ String.prototype.toRaw__ = function() {
 
 window.equals__ = function (array_1, array_2) {
     if (!array_2)
-        return false;
+    return false;
 
     if (array_1.length != array_2.length)
-        return false;
-
+    return false;
+    
     for (var i = 0, l=array_1.length; i < l; i++) {
         // Check if we have nested array_2s
         if (array_1[i] instanceof Array && array_2[i] instanceof Array) {
             // recurse into the nested array_2s
             if (!equals__(array_1[i], array_2[i]))
-                return false;       
+            return false;       
         }           
         else if (array_1[i] != array_2[i]) { 
             // Warning - two different object instances will never be equal: {x:20} != {x:20}
@@ -161,49 +143,49 @@ window.writeOnClipboard = function (content) {
             return
         }
         navigator.clipboard.writeText(content)
-            .then(() => resolve())
-            .catch((err) => reject(err))
+        .then(() => resolve())
+        .catch((err) => reject(err))
     })
 }
 
 window.message = function (message, type = 'normal') {
     if (!message) return
     let container = document.getElementById('message_container')
-
+    
     if (!container) {
         container = document.createElement('div')
         container.id = 'message_container'
         document.body.appendChild(container)
     }
-
+    
     const func_1 = function(element) {
         element.classList.remove('fade-in-down')
         element.classList.add('fade-out-up')
-
+        
         setTimeout(() => {
             element.remove()
-
+            
             const childs = container.childNodes
             if (childs.length === 0) container.remove()
         }, 200)
     }
-
+    
     const message_box = document.createElement('div')
     message_box.classList.add('message-box')
-
+    
     const span = document.createElement('span')
     span.textContent = message
-
+    
     let remove_timer = 2000
-
+    
     if (type === 'normal') remove_timer = 800
-
+    
     message_box.classList.add(type)
-
+    
     message_box.appendChild(span)
-
+    
     let timer = 0
-
+    
     const atual_message = document.querySelectorAll('#message_container .message-box')
     
     if (atual_message[0]) {
@@ -211,7 +193,7 @@ window.message = function (message, type = 'normal') {
         timer = 100
     }
     container.appendChild(message_box)
-
+    
     setTimeout(() => {
         message_box.classList.add('animated', 'fade-in-down')
         setTimeout(() => func_1(message_box), remove_timer)
@@ -237,12 +219,6 @@ window.theme = function(newTheme) {
     }
 }
 
-window.addEventListener('load', () => {
-    const load_blocker = document.getElementById('load_blocker')
-    load_blocker.classList.add('off')
-    setTimeout(() => load_blocker.remove(), 200)
-})
-
 window.addEventListener('popstate', () => fetcher(window.location.href, true))
 
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => theme(e.matches ? "dark" : "light"))
@@ -253,6 +229,14 @@ window.calc_offset = 0
 
 window.content_title = ''
 
+window.linkDB = await fetch('/JSON/linkDB.json').then(res => res.json())
+window.most_acessed = await fetch('/statistics/MostAcessed').then(res => res.json())
+
+searchBar.init()
+create.menu(linkDB)
+preChoice.create(most_acessed)
+
+
 const h_login_btn = document.querySelector('.icon-box.login button')
 
 h_login_btn.addEventListener('click', () => {
@@ -261,20 +245,6 @@ h_login_btn.addEventListener('click', () => {
     userLog()
 })
 
-fetch('/JSON/link_db.json')
-.then((response) => response.json())
-.then((data) => link_db = data)
-.then(() => {
-    create.menu(link_db)
-    searchBar.datalist.logic(link_db)
-})
-
-fetch('/statistics/MostAcessed')
-.then((response) => response.json())
-.then((data) => {
-    preChoice.create(data)
-    newPage()
-    })
 
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) theme('dark')
 
@@ -287,39 +257,6 @@ theme_switch.addEventListener('change', () => {
     theme()
 })
 
-search_bar_icon.addEventListener('click', () => searchBar.mediaManagement(true))
-
-search_bar_arrow_back.addEventListener('click', () => searchBar.mediaManagement(false))
-
-search_bar.addEventListener('input', () => searchBar.datalist.logic(link_db))
-
-search_bar.addEventListener('focus', () => {
-    searchBar.datalist.logic(link_db)
-    search_bar.select()
-})
-
-search_bar_form.addEventListener('submit', (e) => {
-    e.preventDefault()
-    const option = document.querySelector('#datalist .option')
-    if (!option) return
-    const link = option.getAttribute('link')
-    const reference = option.textContent
-    search_bar.value = reference
-    searchBar.mediaManagement(false)
-    fetcher(link)
-    searchBar.datalist.historyManagement(reference)
-})
-
-datalist.addEventListener('click', (e) => {
-    if (e.target.classList.contains('datalist')) searchBar.mediaManagement(true)
-})
-
-search_bar_x.addEventListener('click', () => {
-    searchBar.mediaManagement(true)
-    search_bar.value = ''
-    searchBar.datalist.logic(link_db)
-})
-
 window.addEventListener('resize', () => {
     if (!screenMedia()) {
         if (screenMedia(849)) {
@@ -329,3 +266,20 @@ window.addEventListener('resize', () => {
         preChoice.translate()
     }
 })
+
+if (getCookie('username') !== '') {
+    try {
+        await login({
+            username: getCookie('username'), 
+            deviceToken: getCookie('deviceToken'), 
+            sessionToken: getCookie('sessionToken')
+        })
+    } catch(e) {
+        console.log(e)
+    }
+}
+
+newPage()
+const load_blocker = document.getElementById('load_blocker')
+load_blocker.classList.add('off')
+setTimeout(() => load_blocker.remove(), 200)

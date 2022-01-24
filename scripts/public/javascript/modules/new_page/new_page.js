@@ -1,6 +1,8 @@
 import preChoice from '../pre_choice/pre_choice.js'
+import fill from '../user/functions/fill.js'
 import newCalcContent from "./functions/new_calc_content.js"
 import newSorteioContent from "./functions/new_sorteio_content.js"
+import newUserContent from './functions/new_user_content.js'
 
 const new_page = {
     home: function() {
@@ -9,6 +11,11 @@ const new_page = {
     sorteio: {
         'sorteio de numeros': newSorteioContent['sorteio de numeros'], 
         'sorteio de elementos': newSorteioContent['sorteio de elementos']
+    }, 
+    user: {
+        profile: newUserContent['profile'], 
+        account: newUserContent['account'], 
+        about: newUserContent['about']
     }, 
     calc: newCalcContent
 }
@@ -57,12 +64,17 @@ export default function newPage() {
         const key = url[0]
         const subkey = url[1]
         const func = new_page[key][subkey] || new_page[key]
+        console.log(func)
         try {
             func()
-        } catch {
+        } catch(e) {
+            console.log(e)
             message('houve um erro.', 'red')
         }
     }
+
+    fill()
+
     const page_title = document.querySelector('.data-box .header h1')
     if (page_title) content_title = page_title.textContent
     else content_title = ''

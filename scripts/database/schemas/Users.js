@@ -18,10 +18,6 @@ const UsersSchema = new mongoose.Schema({
         unique: true, 
         trim: true
     }, 
-    fullname: {
-        type: String, 
-        trim: true
-    }, 
     email: {
         type: String, 
         required: true, 
@@ -47,14 +43,18 @@ const UsersSchema = new mongoose.Schema({
     token: {
         type: String, 
         default: null
-    }
+    }, 
+    session: [{
+        deviceToken: {
+            type: String, 
+        }, 
+        sessionToken: {
+            type: String
+        }
+    }] 
 })
 
 UsersSchema.pre('save', async function() {
-    this.name = this.name.split(' ').map(str => `${str[0].toUpperCase()}${str.slice(1)}`).join(' ')
-    this.lastname = this.lastname.split(' ').map(str => `${str[0].toUpperCase()}${str.slice(1)}`).join(' ')
-
-    this.fullname = `${this.name} ${this.lastname}`
     const data = await UserActivity.create({ userId: this._id })
     this.userActivity = data
 })
